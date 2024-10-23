@@ -193,6 +193,9 @@ Antes de instalar o Airflow, é preciso atender a um requisito: criar um secret 
 ### change github -> orchestrator/airflow.yaml repo
 ```sh
 kubectl create secret generic airflow-ssh-secret --from-file=gitSshKey=$HOME/.ssh/{path-private-ssh-key-on-computer} -n orchestrator
+
+# example
+kubectl create secret generic airflow-ssh-secret --from-file=gitSshKey=$HOME/.ssh/id_ed25519 -n orchestrator
 ```
 
 ```sh
