@@ -35,7 +35,7 @@ spec:
         dags:
           gitSync:
             enabled: true
-            repo: "git@github.com:K8-Brewery_API-Upgrade.git"
+            repo: "git@github.com:Gabriel-Philot/K8-Brewery_API-Upgrade.git"
             branch: main
             rev: HEAD
             depth: 1

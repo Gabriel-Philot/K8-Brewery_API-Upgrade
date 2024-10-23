@@ -231,9 +231,12 @@ Antes de tudo, é necessário possuir uma `imagem do Spark` que contenha todos o
 
 try later to push from docker repo.
 ```sh
+# first test
 eval $(minikube docker-env)
-docker build --no-cache -f images/spark/dockerfile images/spark/ -t sparkminikube:0.1
+docker build --no-cache -f images/spark/dockerfile images/spark/ -t gersonRsimage:0.1
 ```
+remind to change it in to dags spark-jobs.
+
 
 
 ## Acess airflow and check the admin/connections
