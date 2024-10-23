@@ -159,6 +159,7 @@ Uma vez que os secrets estejam configurados, é possível instalar os bancos de 
 ```sh
 # databases
 kubectl apply -f manifests/database/postgres.yaml
+
 # deep storage
 kubectl apply -f manifests/deepstorage/minio.yaml
 ```
