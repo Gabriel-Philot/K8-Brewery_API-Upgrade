@@ -1,4 +1,4 @@
-# LAB | K8-SPOK(DELTA) - AIRFLOW - MINIO [MINIKUBE]
+# LAB | K8-SPOK(DELTA)-AIRFLOW-MINIO [MINIKUBE]
 
 The objective of this repository is to upgrade a [solution](https://github.com/Gabriel-Philot/Case_Breweries_Abinbev) that was originally built outside of the Kubernetes environment and bring it into Kubernetes.
 
