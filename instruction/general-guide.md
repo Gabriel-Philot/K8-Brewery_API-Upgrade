@@ -148,7 +148,8 @@ Após o Reflector estar funcionando, execute o comando que cria os secrets nos n
 
 In this setup, we can modify the values in config.json (located at images/airflow/connections.json), but it's also necessary to update the corresponding secrets in minio-secrets.yaml and postgress-secrets.yaml. Be cautious with the Base64 encryption used in these files.
 
-watch airflow.yaml file ....line 50
+>[!Warning] 
+> Watch the airflow.yaml file (line 50). If you change the keys, you'll need to update them there as well.
 
 ### alterar github -> manifests/misc/secrets.yaml
 ```sh
