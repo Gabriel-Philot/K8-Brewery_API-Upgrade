@@ -110,6 +110,10 @@ then paste it on github new ssh key.
 
 argocd repo add git@github.com:Gabriel-Philot/{repo-path}.git --ssh-private-key-path ~/.ssh/{path-private-ssh-key-on computer} --insecure-skip-server-verification
 
+#example
+argocd repo add git@github.com:Gabriel-Philot/K8-Brewery_API-Upgrade.git --ssh-private-key-path ~/.ssh/id_ed25519 --insecure-skip-server-verification
+
+
 ```
 
 > caso queira ver o password do argo para acessar a interface web execute este comando: `kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.password}" | base64 -d`
@@ -144,6 +148,7 @@ Após o Reflector estar funcionando, execute o comando que cria os secrets nos n
 
 In this setup, we can modify the values in config.json (located at images/airflow/connections.json), but it's also necessary to update the corresponding secrets in minio-secrets.yaml and postgress-secrets.yaml. Be cautious with the Base64 encryption used in these files.
 
+watch airflow.yaml file ....line 50
 
 ### alterar github -> manifests/misc/secrets.yaml
 ```sh
@@ -221,7 +226,7 @@ kubectl cp images/airflow/connections.json orchestrator/$SCHEDULER_POD_NAME:./ -
 kubectl -n orchestrator exec $SCHEDULER_POD_NAME -- airflow connections import connections.json -->
 
 
-Ótimo, agora que você configurou as ferramentas necessárias, temos o ambiente de desenvolvimento e de execução instalado e pronto para uso.
+Ótimo, agora que você configuro u as ferramentas necessárias, temos o ambiente de desenvolvimento e de execução instalado e pronto para uso.
 
 ### Executando o projeto
 
@@ -266,7 +271,7 @@ Para verificar os arquivos no `data lakehouse`, acesse a interface web do `MinIO
 ```sh
 kubectl get services -n deepstorage -l app.kubernetes.io/name=minio -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
 ```
-+9090
++9000
 
 Caso queira obter as credenciais de acesso do `MinIO`, execute:
 ```sh
