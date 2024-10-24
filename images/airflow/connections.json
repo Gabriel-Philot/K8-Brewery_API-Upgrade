@@ -17,6 +17,6 @@
         "host": "",
         "port": null,
         "schema": "",
-        "extra": "{\"aws_access_key_id\": \"gerson\", \"aws_secret_access_key\": \"rHasMuUFzGY0REI2H6RcdaJFNZp9b9ht\", \"endpoint_url\": \"http://minio.deepstorage.svc.cluster.local:9000\"}"
+        "extra": "{\"aws_access_key_id\": \"miniouser\", \"aws_secret_access_key\": \"miniosecret\", \"endpoint_url\": \"http://minio.deepstorage.svc.cluster.local:9000\"}"
     }
 }
