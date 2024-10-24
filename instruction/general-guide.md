@@ -243,6 +243,10 @@ remind to change it in to dags spark-jobs.
 ```sh
 kubectl get services -n orchestrator -l component=webserver,argocd.argoproj.io/instance=airflow -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
 ```
+this adress + :8080 
+
+login/pass : admin
+
 
 Uma vez na interface do Airflow, ative o pipeline de dados `pipeline-delta-lake-deep-dive-complete` e veja a mágica acontecer. Ou, se preferir, você também pode executar cada etapa separadamente, seguindo a sequência:
   * `ingestion-from-local-data-file-to-bronze-tables`
@@ -262,6 +266,7 @@ Para verificar os arquivos no `data lakehouse`, acesse a interface web do `MinIO
 ```sh
 kubectl get services -n deepstorage -l app.kubernetes.io/name=minio -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
 ```
++9090
 
 Caso queira obter as credenciais de acesso do `MinIO`, execute:
 ```sh
