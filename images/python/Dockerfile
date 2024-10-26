@@ -1,0 +1,21 @@
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Instala dependências do sistema se necessário
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copia e instala requirements sem colocá-lo na imagem final
+COPY src/requirements.txt /tmp/
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+# Copia apenas os arquivos necessários mantendo a estrutura
+COPY src/resources /app/resources/
+COPY src/api_to_bronze.py /app/
+
+USER root
+
+CMD ["python", "-u", "api_to_bronze.py"]

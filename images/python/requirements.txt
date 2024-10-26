@@ -1,0 +1,5 @@
+pip>=23.3.2
+pytz==2024.1
+requests==2.31.0
+boto3==1.26.158
+pathlib
