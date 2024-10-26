@@ -49,6 +49,8 @@ from airflow.utils.dates import days_ago
 
 # [END import_module]
 
+DAGS_FOLDER_PATH = "https://github.com/Gabriel-Philot/K8-Brewery_API-Upgrade/tree/main/dags/python_jobs"
+
 # [START default_args]
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
@@ -96,12 +98,12 @@ ingestion = KubernetesPodOperator(
     name="brewery-ingestion",
     is_delete_operator_pod=True,
     namespace="processor",
-    pod_template_file="api_teste_to_minio.yaml",
+    pod_template_file=f"{DAGS_FOLDER_PATH}/api_teste_to_minio.yaml",
     kubernetes_conn_id="kubernetes_default",
     do_xcom_push=True,
     dag=dag,
 )
-
+#pod_template_file=f"{DAGS_FOLDER_PATH}/pipeline-combustiveis-ingestion.yaml",
 # ingestion_sensor = KubernetesPodSensor(
 #     task_id="task_ingestion_bronze_table_monitor",
 #     namespace="processing",
