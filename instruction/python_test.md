@@ -239,7 +239,7 @@ try later to push from docker repo.
 ```sh
 # first test
 eval $(minikube docker-env)
-docker build --no-cache -f images/spark/dockerfile images/spark/ -t gersonrsimage:0.1
+docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.1
 ```
 remind to change it in to dags spark-jobs.
 
