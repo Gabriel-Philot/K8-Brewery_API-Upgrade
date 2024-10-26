@@ -104,6 +104,7 @@ ingestion = KubernetesPodOperator(
     pod_template_file=f"{DAGS_FOLDER_PATH}/api_teste_to_minio.yaml",
     kubernetes_conn_id="kubernetes_default",
     in_cluster=True,
+    get_logs=True,
     do_xcom_push=True,
     dag=dag,
 )
