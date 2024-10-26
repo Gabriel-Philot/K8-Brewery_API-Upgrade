@@ -1,9 +1,9 @@
-# Teste separação de imagens de ingestão/processamento
+Teste separação de imagens de ingestão/processamento
 
 
-# Ingestão
+## Ingestão
 
-## Passos
+## #Passos
 
 ```
 minikube start --memory=8000 --cpus=2
@@ -14,7 +14,7 @@ Para acessar alguns serviços via loadbalancer no Minikube, é necessário utili
 minikube tunnel
 ```
 
-## Instalação das ferramentas
+### Instalação das ferramentas
 
 Depois do ambiente inicializado será necessario instalar algumas aplicações que serão responsaveis por manter e gerenciar nosso pipeline de dados.
 
@@ -106,7 +106,7 @@ Uma vez que tenha acessado a pagina de autenticação do argocd use o `username`
 kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.password}" | base64 -d
 ```
 
-## Aqui o reflector armazena as secrets basicamente e distribui entre diferentes namespaces
+### Aqui o reflector armazena as secrets basicamente e distribui entre diferentes namespaces
 
 ```sh
 kubectl apply -f manifests/management/reflector.yaml
@@ -216,7 +216,7 @@ docker build --no-cache -f images/python/dockerfile images/python/ -t python_ima
 ```
 remind to change it in to dags spark-jobs.
 
-## DEBGUG AQUI talvez valha vc rodar o script antes do airf para garantir que vai estar ok
+### DEBGUG AQUI talvez valha vc rodar o script antes do airf para garantir que vai estar ok
 
 dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
@@ -230,7 +230,7 @@ kubectl logs api-test-pod -n orchestrator -c python-container
 ```
 
 
-## Acess airflow and check the admin/connections
+### Acess airflow and check the admin/connections
 ```sh
 kubectl get services -n orchestrator -l component=webserver,argocd.argoproj.io/instance=airflow -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
 ```
@@ -252,7 +252,7 @@ kubectl apply -f dags/spark_jobs/delivery_data_from_silver_to_gold.yaml -n proce
 ```
 Para verificar os arquivos no `data lakehouse`, acesse a interface web do `MinIO` e use as credenciais de acesso encontradas no arquivo *[minio-secrets.yaml](/secrets/minio-secrets.yaml)* na pasta *[secrets](/secrets/)*. Caso não saiba o IP atribuído ao MinIO, execute:
 
-## geting miniO port
+### geting miniO port
 
 ```sh
 kubectl get services -n deepstorage -l app.kubernetes.io/name=minio -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}"
