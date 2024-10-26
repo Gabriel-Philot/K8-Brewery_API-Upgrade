@@ -84,20 +84,21 @@ start = DummyOperator(task_id='start', dag=dag)
 
 # verify if new data has arrived on processing bucket
 # connecting to minio to check (sensor)
-list_keys = S3ListOperator(
-    task_id="list_keys",
-    bucket="landing",
-    prefix="/",
-    aws_conn_id="minio",
-    do_xcom_push=True,
-    dag=dag,
-)
+# list_keys = S3ListOperator(
+#     task_id="list_keys",
+#     bucket="landing",
+#     prefix="/",
+#     aws_conn_id="minio",
+#     do_xcom_push=True,
+#     dag=dag,
+# )
 
+    # name...
+    # is_delete_operator_pod=True,
+    # namespace="processor",
 ingestion = KubernetesPodOperator(
     task_id="tastk_ingestion_bronze_table",
     name="brewery-ingestion",
-    is_delete_operator_pod=True,
-    namespace="processor",
     pod_template_file=f"{DAGS_FOLDER_PATH}/api_teste_to_minio.yaml",
     kubernetes_conn_id="kubernetes_default",
     do_xcom_push=True,
@@ -119,7 +120,6 @@ end = DummyOperator(task_id='end', dag=dag)
 # [START task_sequence]
 (
     start
-    >> list_keys
     >> ingestion
     >> end
 )
