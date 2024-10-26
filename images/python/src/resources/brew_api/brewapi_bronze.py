@@ -6,15 +6,11 @@ from pathlib import Path
 from datetime import datetime
 from resources.utils.utils import log_header
 
-config_path = Path("src/resources/utils/configs.json")
 
-with config_path.open('r') as config_file:
-    config = json.load(config_file)
 
 # Main class to interact with the OpenBreweryDB API
 class BreweryRequestsApi:
-    _Url_Brewery_API = config['api']['url']
-    _bronze_path_file = Path(config['paths']['bronze'])
+    _Url_Brewery_API = "https://api.openbrewerydb.org/v1/breweries"
 
     def __init__(self, per_page: int = 100):
         self.per_page = per_page

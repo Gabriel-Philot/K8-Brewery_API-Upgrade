@@ -243,6 +243,18 @@ docker build --no-cache -f images/python/dockerfile images/python/ -t python_ima
 ```
 remind to change it in to dags spark-jobs.
 
+## DEBGUG AQUI talvez valha vc rodar o script antes do airf para garantir que vai estar ok
+
+dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
+
+```sh
+# ir até o path da imagem
+kubectl apply -f api_teste_to_minio.yaml -n orchestrator
+
+
+kubectl logs api-test-pod -n orchestrator -c python-container
+
+```
 
 
 ## Acess airflow and check the admin/connections

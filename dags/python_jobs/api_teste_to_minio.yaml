@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "api-test-pod"
+  name: "api-test-pod2"
 spec:
   containers:
   - name: python-container
-    image: python_image:0.1
+    image: python_image:0.2
     imagePullPolicy: IfNotPresent
     securityContext:
       allowPrivilegeEscalation: false
