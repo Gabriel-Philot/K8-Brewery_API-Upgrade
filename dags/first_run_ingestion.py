@@ -91,7 +91,7 @@ list_keys = S3ListOperator(
 
 ingestion = KubernetesPodOperator(
     task_id="tastk_ingestion_bronze_table",
-    name = "api_ingestion_name"
+    name = "api_ingestion_name",
     is_delete_operator_pod=True,
     namespace="processing",
     application_file="python_jobs/api_teste_to_minio.yaml",
