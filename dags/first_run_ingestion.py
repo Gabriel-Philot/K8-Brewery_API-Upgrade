@@ -93,6 +93,8 @@ list_keys = S3ListOperator(
 
 ingestion = KubernetesPodOperator(
     task_id="tastk_ingestion_bronze_table",
+    name="brewery-ingestion",
+    is_delete_operator_pod=True,
     namespace="processing",
     pod_template_file="python_jobs/api_teste_to_minio.yaml",
     kubernetes_conn_id="kubernetes_default",
