@@ -37,9 +37,7 @@ from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
 from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
-from airflow.providers.cncf.kubernetes.sensors.pod import (
-    KubernetesPodSensor
-)
+
 # Operators; we need this to operate!
 from airflow.providers.cncf.kubernetes.operators.spark_kubernetes import (
     SparkKubernetesOperator,
@@ -104,13 +102,13 @@ ingestion = KubernetesPodOperator(
     dag=dag,
 )
 
-ingestion_sensor = KubernetesPodSensor(
-    task_id="task_ingestion_bronze_table_monitor",
-    namespace="processing",
-    pod_name="{{ task_instance.xcom_pull(task_ids='task_ingestion_bronze_table')['metadata']['name'] }}",
-    kubernetes_conn_id="kubernetes_default",
-    dag=dag,
-)
+# ingestion_sensor = KubernetesPodSensor(
+#     task_id="task_ingestion_bronze_table_monitor",
+#     namespace="processing",
+#     pod_name="{{ task_instance.xcom_pull(task_ids='task_ingestion_bronze_table')['metadata']['name'] }}",
+#     kubernetes_conn_id="kubernetes_default",
+#     dag=dag,
+# )
 
 
 
@@ -121,7 +119,6 @@ end = DummyOperator(task_id='end', dag=dag)
     start
     >> list_keys
     >> ingestion
-    >> ingestion_sensor
     >> end
 )
 # [END task_sequence]
