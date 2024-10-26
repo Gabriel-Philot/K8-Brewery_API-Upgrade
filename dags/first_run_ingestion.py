@@ -98,6 +98,7 @@ start = DummyOperator(task_id='start', dag=dag)
     # namespace="processor",
 ingestion = KubernetesPodOperator(
     task_id="tastk_ingestion_bronze_table",
+    name="api-test-pod2",
     is_delete_operator_pod=True,
     namespace="orchestrator",
     pod_template_file=f"{DAGS_FOLDER_PATH}/api_teste_to_minio.yaml",
