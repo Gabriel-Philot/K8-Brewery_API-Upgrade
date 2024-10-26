@@ -50,10 +50,10 @@ from airflow.utils.dates import days_ago
 # These args will get passed on to each operator
 # You can override them on a per-task basis during operator initialization
 default_args = {
-    "owner": "Gersonrs",
+    "owner": "GabrielPhilot",
     "depends_on_past": False,
     "start_date": days_ago(1),
-    "email": ["gersonrodriguessantos8@gmail.com"],
+    "email": ["bilphilot@gmail.com"],
     "email_on_failure": False,
     "email_on_retry": False,
     "max_active_runs": 1,
