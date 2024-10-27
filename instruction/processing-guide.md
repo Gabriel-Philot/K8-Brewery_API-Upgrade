@@ -233,7 +233,7 @@ try later to push from docker repo.
 ```sh
 # first test
 eval $(minikube docker-env)
-docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t brewprocesstest:0.1
+docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t brew-process-spark:0.1
 ```
 remind to change it in to dags spark_jobs yamls.
 

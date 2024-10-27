@@ -7,20 +7,20 @@ from resources.silver_utils import (
     adjusting_column_types,
     clean_columns_for_silver
 )
+from resources.conf_paths import (
+    bronze_layer_path,
+    silver_layer_path
+)
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 
 
 
-bronze_layer_path = "s3a://lakehouse/bronze_layer/"
-silver_layer_path = "s3a://lakehouse/silver_layer/"
-
-
 if __name__ == '__main__':
     # init session
     spark = (
-        SparkSession.builder.appName("ingestion-from-local-data-file-to-bronze-tables")
+        SparkSession.builder.appName("bronze-to-silver-sparksession")
         .config("spark.sql.warehouse.dir", abspath("spark-warehouse"))
         .enableHiveSupport()
         .getOrCreate()
