@@ -13,8 +13,8 @@ import pyspark.sql.functions as F
 
 
 
-bronze_layer_path = "s3a://lakehouse/bronze/"
-silver_layer_path = "s3a://lakehouse/silver/"
+bronze_layer_path = "s3a://lakehouse/bronze_layer/"
+silver_layer_path = "s3a://lakehouse/silver_layer/"
 
 
 if __name__ == '__main__':
