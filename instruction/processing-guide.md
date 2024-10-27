@@ -208,7 +208,7 @@ Antes de tudo, é necessário possuir uma `imagem do Spark` que contenha todos o
 ```sh
 # first test
 eval $(minikube docker-env)
-docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.1
+docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.2
 ```
 > aqui só quando tiver concertado remind to change it in to dags python jobs 
 
@@ -217,11 +217,11 @@ docker build --no-cache -f images/python/dockerfile images/python/ -t python_ima
 dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
 ```sh
-# ir até o path da imagem
+# ir até o path da do yaml
 kubectl apply -f testev0.yaml -n orchestrator
 
 
-kubectl logs api-test-pod -n orchestrator -c python-container
+kubectl logs api-test-pod2 -n orchestrator -c python-container
 
 ```
 >[!Note]

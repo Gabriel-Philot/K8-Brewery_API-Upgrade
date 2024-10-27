@@ -65,7 +65,7 @@ default_args = {
 # [START instantiate_dag]
 
 dag = DAG(
-    "pipeline-delta-lake-deep-dive-complete",
+    "after_bronze_pipe",
     default_args=default_args,
     schedule_interval="@once",
     tags=["spark", "kubernetes", "s3", "sensor", "minio", "bronze", "silver"],
