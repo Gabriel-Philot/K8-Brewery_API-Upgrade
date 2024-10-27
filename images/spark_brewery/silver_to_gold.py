@@ -3,7 +3,7 @@ import os
 from os.path import abspath
 from datetime import datetime
 import logging
-from resources.golden_utils import (
+from resources.gold_utils import (
     gold_table,
     gold_modelling,
     time_update_gold
@@ -11,7 +11,7 @@ from resources.golden_utils import (
 
 from resources.conf_paths import (
     silver_layer_path,
-    golden_layer_path
+    gold_layer_path
 )
 
 from pyspark import SparkConf
@@ -46,8 +46,8 @@ if __name__ == '__main__':
         raise
     
     try:
-        gold_table(spark, golden_layer_path)
-        logging.info(f'[SUCCESS] | CREATED GOLD TABLE IN {golden_layer_path}')
+        gold_table(spark, gold_layer_path)
+        logging.info(f'[SUCCESS] | CREATED GOLD TABLE IN {gold_layer_path}')
 
     except Exception as e:
         logging.error(f'[ERROR] | FAILED TO CREATE GOLD TABLE. ERROR: {str(e)}')
@@ -65,8 +65,8 @@ if __name__ == '__main__':
         df_gold_data.write \
             .format('delta') \
             .mode('overwrite') \
-            .save(golden_layer_path)
-        logging.info(f' [SUCCESS] | SAVE DATA INTO {golden_layer_path}')
+            .save(gold_layer_path)
+        logging.info(f' [SUCCESS] | SAVE DATA INTO {gold_layer_path}')
         
     except Exception as e:
         logging.error(f'[ERROR] | FAILED TO SAVE DATA. ERROR: {str(e)}')

@@ -106,6 +106,23 @@ transform_sensor = SparkKubernetesSensor(
     attach_log=True,
 )
 
+gold_delivery = SparkKubernetesOperator(
+    task_id="silver_to_gold_task",
+    namespace="processing",
+    application_file="spark_jobs/silver_to_gold.yaml",
+    kubernetes_conn_id="kubernetes_default",
+    do_xcom_push=True,
+    dag=dag,
+)
+
+gold_delivery_sensor = SparkKubernetesSensor(
+    task_id="silver_to_gold_task_monitor",
+    namespace="processing",
+    application_name="{{task_instance.xcom_pull(task_ids='silver_to_gold_task')['metadata']['name']}}",
+    kubernetes_conn_id="kubernetes_default",
+    dag=dag,
+    attach_log=True,
+)
 
 
 end = DummyOperator(task_id='end', dag=dag)
@@ -116,6 +133,8 @@ end = DummyOperator(task_id='end', dag=dag)
     >> list_keys
     >> tranform
     >> transform_sensor
+    >> gold_delivery
+    >> gold_delivery_sensor
     >> end
 )
 # [END task_sequence]
