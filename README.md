@@ -11,7 +11,7 @@ Here, I will mainly transform the data source and Docker images to fit my own us
 
 ## [IN DEV]
 
-### Things completed : 
+### Completed : 
 
 * Process v0
 
