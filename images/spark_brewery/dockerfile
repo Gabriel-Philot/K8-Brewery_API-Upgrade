@@ -32,4 +32,4 @@ USER ${spark_uid}
 COPY requirements.txt /
 RUN pip install --no-cache-dir -r /requirements.txt
 
-COPY bronze_to_silver.py /app/
+COPY bronze_to_silver.py silver_to_gold.py /app/
