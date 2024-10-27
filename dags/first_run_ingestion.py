@@ -27,6 +27,7 @@ https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
 """
 
 from datetime import timedelta
+from pathlib import Path
 
 # [START import_module]
 # The DAG object; we'll need this to instantiate a DAG
@@ -101,7 +102,7 @@ ingestion = KubernetesPodOperator(
     name="api-test-pod2",
     is_delete_operator_pod=True,
     namespace="processor",
-    pod_template_file="python_jobs/testev0.yaml",
+    pod_template_file=str(Path(__file__).parent / "python_jobs" / "testev0.yaml"),
     kubernetes_conn_id="kubernetes_default",
     in_cluster=True,
     get_logs=True,

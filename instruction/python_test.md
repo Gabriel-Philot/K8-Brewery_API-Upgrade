@@ -222,7 +222,7 @@ dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
 ```sh
 # ir até o path da imagem
-kubectl apply -f testv0.yaml -n orchestrator
+kubectl apply -f testev0.yaml -n orchestrator
 
 
 kubectl logs api-test-pod -n orchestrator -c python-container
