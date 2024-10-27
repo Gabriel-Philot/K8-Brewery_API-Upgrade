@@ -2,8 +2,22 @@
 
 The objective of this repository is to upgrade a [solution](https://github.com/Gabriel-Philot/Case_Breweries_Abinbev) that was originally built outside of the Kubernetes environment and bring it into Kubernetes.
 
-First of all, I want to thank [GersonRS](https://github.com/GersonRS) for the amazing [repository](https://github.com/GersonRS/hands-on-running-spark-jobs-with-airflow) that made this lab possible (perfect guide).
+First of all, I want to thanks [GersonRS](https://github.com/GersonRS) for the amazing [repository](https://github.com/GersonRS/hands-on-running-spark-jobs-with-airflow) that made this lab possible (perfect guide).
 
 Here, I will mainly transform the data source and Docker images to fit my own use case.
 
-# [IN DEV]
+>[!Note]
+> To understand how to proceed/use this project, refer to the (repo -> instructions) general & process guides. I’ll improve the docs/readme as the project evolves.
+
+## [IN DEV]
+
+### Things completed : 
+
+* Process v0
+
+
+### Next Steps:
+
+* Fix ingestion (out of spark envr) maybe Airbyte.
+* Protheus or grafana
+* Deploy it on a cloud.
