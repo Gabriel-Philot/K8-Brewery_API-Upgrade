@@ -27,7 +27,7 @@ https://github.com/GoogleCloudPlatform/spark-on-k8s-operator
 """
 
 from datetime import timedelta
-from pathlib import Path
+from os import getenv, path
 
 # [START import_module]
 # The DAG object; we'll need this to instantiate a DAG
@@ -50,7 +50,7 @@ from airflow.utils.dates import days_ago
 
 # [END import_module]
 
-DAGS_FOLDER_PATH = "https://github.com/Gabriel-Philot/K8-Brewery_API-Upgrade/tree/main/dags/python_jobs"
+DAGS_FOLDER_PATH = path.dirname(__file__)
 
 # [START default_args]
 # These args will get passed on to each operator
@@ -102,7 +102,7 @@ ingestion = KubernetesPodOperator(
     name="api-test-pod2",
     is_delete_operator_pod=True,
     namespace="orchestrator",
-    pod_template_file="python_jobs/testev0.yaml",
+    pod_template_file=f"{DAGS_FOLDER_PATH}/python_jobs/testev0.yaml",
     kubernetes_conn_id="kubernetes_default",
     in_cluster=True,
     get_logs=True,
