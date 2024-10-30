@@ -202,17 +202,20 @@ Antes de tudo, é necessário possuir uma `imagem do Spark` que contenha todos o
 
 
 
-## Ponto de atenção ennquanto nao resolver a parte da ingestão será necessario fazer esse passo aqui para jogar os dados na bronze layer.
+## Solved but dont know why:
+
+* Reminder: 
+DAGS_FOLDER_PATH = path.dirname(__file__) in K8podOperator task.
 
 
 ```sh
-# first test
+# ingestion image
 eval $(minikube docker-env)
 docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.2
 ```
 > aqui só quando tiver concertado remind to change it in to dags python jobs 
 
-### DEBGUG AQUI talvez valha vc rodar o script antes do airf para garantir que vai estar ok
+### Commands for debuging if needed
 
 dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
