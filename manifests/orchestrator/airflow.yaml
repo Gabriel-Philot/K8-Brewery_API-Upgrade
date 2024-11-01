@@ -30,8 +30,7 @@ spec:
           enabled: false
         logs:
           persistence:
-            enabled: true
-            size: 10Gi
+            enabled: false
         dags:
           gitSync:
             enabled: true
@@ -50,6 +49,14 @@ spec:
             value: "aws:///?region_name=eu-west-1&aws_access_key_id=miniouser&aws_secret_access_key=miniosecret&endpoint_url=http%3A%2F%2Fminio.deepstorage.svc.cluster.local%3A9000"
           - name: AIRFLOW_CONN_MINIKUBE
             value: "kubernetes:///?__extra__=%7B%22in_cluster%22%3A+true%2C+%22disable_verify_ssl%22%3A+false%2C+%22disable_tcp_keepalive%22%3A+false%7D"
+          - name: AIRFLOW__LOGGING__REMOTE_LOGGING
+            value: "True"
+          - name: AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER
+            value: "s3://airflow/logs"
+          - name: AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID
+            value: "minio_s3"
+          - name: AIRFLOW__KUBERNETES__DELETE_WORKER_PODS
+            value: "True"
         extraSecrets:
           airflow-metadata-secret:
             data: |
