@@ -23,7 +23,7 @@ spec:
               matchLabels:
                 release: airflow
             podMetricsEndpoints:
-              - port: metrics  
+              - port: 9091  
                 interval: 30s
   syncPolicy:
     automated:

@@ -21,6 +21,17 @@ spec:
         server:
           service:
             type: LoadBalancer
+        nodeExporter:
+          enabled: true
+        podMonitors:
+          - name: airflow-pod-monitor
+            namespace: orchestrator
+            selector:
+              matchLabels:
+                release: airflow
+            podMetricsEndpoints:
+              - port: 9091
+                interval: 30s
   syncPolicy:
     automated:
       prune: true

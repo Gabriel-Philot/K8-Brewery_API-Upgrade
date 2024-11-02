@@ -156,6 +156,7 @@ kubectl apply -f manifests/processing/spark.yaml
 kubectl apply -f manifests/monitoring/prometheus.yaml
 kubectl apply -f manifests/monitoring/grafana.yaml
 kubectl apply -f manifests/monitoring/pod-monitoring.yaml
+
 ```
 <!-- Para criar um imagem do airflow com algumas libs inclusas, para isto execute o seguinte comando:
 ```sh 

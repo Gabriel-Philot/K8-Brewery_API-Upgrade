@@ -46,6 +46,7 @@ spec:
               |1|7ww9iNXn8d1jtXlaDjt+fYpsRi0=|vfHsTzw+QATWkCKD7kgG2jhu/1w= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
         metrics:
           enabled: true
+          port: 9091
         env:
           - name: AIRFLOW_CONN_MINIO_S3
             value: "aws:///?region_name=eu-west-1&aws_access_key_id=miniouser&aws_secret_access_key=miniosecret&endpoint_url=http%3A%2F%2Fminio.deepstorage.svc.cluster.local%3A9000"
