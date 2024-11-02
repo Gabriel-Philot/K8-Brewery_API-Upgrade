@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: airflow-pod-monitor
+  namespace: orchestrator
+  selector:
+    matchLabels:
+      release: airflow  # Certifique-se de que o label corresponde aos pods do Airflow
+  namespaceSelector:
+    matchNames:
+      - orchestrator
+  podMetricsEndpoints:
+    - port: metrics  # Porta de métricas exposta pelo Airflow
+      interval: 30s

@@ -149,16 +149,20 @@ helm repo update
 # processing
 kubectl apply -f manifests/processing/spark.yaml
 ```
+
+
+#### Grafana
+```sh
+kubectl apply -f manifests/monitoring/prometheus.yaml
+kubectl apply -f manifests/monitoring/grafana.yaml
+```
 <!-- Para criar um imagem do airflow com algumas libs inclusas, para isto execute o seguinte comando:
 ```sh 
 eval $(minikube docker-env)
 docker build -f images/airflow/dockerfile images/airflow/ -t airflow:0.1
 ``` -->
 
-### Grafana
 
-kubectl apply -f manifests/monitoring/prometheus.yaml
-kubectl apply -f manifests/monitoring/grafana.yaml
 
 
 Antes de instalar o Airflow, é preciso atender a um requisito: criar um secret contendo sua `chave ssh`, para que o Airflow possa baixar as `DAGs` necessárias por meio do `gitSync`. É possível criar esse secret com o seguinte comando:
