@@ -158,6 +158,11 @@ kubectl apply -f manifests/monitoring/grafana.yaml
 kubectl apply -f manifests/monitoring/pod-monitoring.yaml
 
 ```
+##### Remember!
+kubectl describe service prometheus-server --namespace=monitoring
+use the ip plus 80 in grafana's link data source.
+
+
 <!-- Para criar um imagem do airflow com algumas libs inclusas, para isto execute o seguinte comando:
 ```sh 
 eval $(minikube docker-env)
