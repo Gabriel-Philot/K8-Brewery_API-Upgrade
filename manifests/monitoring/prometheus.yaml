@@ -21,6 +21,7 @@ spec:
         server:
           service:
             type: LoadBalancer
+            port: 9090
         nodeExporter:
           enabled: true
         podMonitors:
