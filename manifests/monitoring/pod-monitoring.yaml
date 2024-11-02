@@ -1,14 +1,31 @@
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: airflow-pod-monitor
-  namespace: orchestrator
-  selector:
-    matchLabels:
-      release: airflow  # Certifique-se de que o label corresponde aos pods do Airflow
-  namespaceSelector:
-    matchNames:
-      - orchestrator
-  podMetricsEndpoints:
-    - port: metrics  # Porta de métricas exposta pelo Airflow
-      interval: 30s
+  annotations:
+    argocd.argoproj.io/sync-wave: "7"
+  namespace: cicd  
+spec:
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: orchestrator 
+  project: default
+  source:
+    repoURL: "https://prometheus-community.github.io/helm-charts"
+    targetRevision: "15.0.0"
+    chart: "prometheus"
+    helm:
+      values: |-
+        podMonitors:
+          - name: airflow-pod-monitor
+            namespace: orchestrator
+            selector:
+              matchLabels:
+                release: airflow
+            podMetricsEndpoints:
+              - port: metrics  
+                interval: 30s
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
