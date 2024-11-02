@@ -151,16 +151,24 @@ kubectl apply -f manifests/processing/spark.yaml
 ```
 
 
-#### Grafana
+## Grafana
 ```sh
 kubectl apply -f manifests/monitoring/prometheus.yaml
 kubectl apply -f manifests/monitoring/grafana.yaml
-kubectl apply -f manifests/monitoring/pod-monitoring.yaml
+#kubectl apply -f manifests/monitoring/pod-monitoring.yaml  deprecated
 
 ```
 ##### Remember!
+```sh
+# loadb -> exertnal ip for grafana web
+kubectl get services --namespace monitoring
+
 kubectl describe service prometheus-server --namespace=monitoring
-use the ip plus 80 in grafana's link data source.
+# use the ip plus 80 in grafana's link data source.
+```
+
+
+
 
 
 <!-- Para criar um imagem do airflow com algumas libs inclusas, para isto execute o seguinte comando:
@@ -170,7 +178,7 @@ docker build -f images/airflow/dockerfile images/airflow/ -t airflow:0.1
 ``` -->
 
 
-
+## Airflow
 
 Antes de instalar o Airflow, é preciso atender a um requisito: criar um secret contendo sua `chave ssh`, para que o Airflow possa baixar as `DAGs` necessárias por meio do `gitSync`. É possível criar esse secret com o seguinte comando:
 
