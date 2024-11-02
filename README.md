@@ -14,10 +14,9 @@ Here, I will mainly transform the data source and Docker images to fit my own us
 ### Completed : 
 
 * Process v0
-
+* Fix ingestion (look in instructions - pre-total-guide.md)
 
 ### Next Steps:
 
-* Fix ingestion (out of spark envr) docker first (maybe Airbyte later).
 * Protheus or grafana
 * Deploy it on a cloud.
