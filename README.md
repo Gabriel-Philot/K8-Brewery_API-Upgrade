@@ -16,7 +16,12 @@ Here, I will mainly transform the data source and Docker images to fit my own us
 * Process v0
 * Fix ingestion (look in instructions - pre-total-guide.md)
 
-### Next Steps:
+
+### In Dev:
 
 * Protheus or grafana
+
+### Next Steps:
+
+* Good practices airflow
 * Deploy it on a cloud.
