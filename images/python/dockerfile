@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 COPY src/resources /app/resources/
 COPY src/config /app/config/
 COPY src/api_to_bronze.py /app/
+COPY src/validation_ingestion.py /app/
 
 USER root
 

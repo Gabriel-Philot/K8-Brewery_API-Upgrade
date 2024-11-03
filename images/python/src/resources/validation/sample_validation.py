@@ -1,21 +1,20 @@
 import json
-from collections import Counter
-from glob import glob
-from pathlib import Path
 import logging
+from collections import Counter
+import boto3
 from resources.brew_api.brewapi_bronze import BreweryRequestsApi
-from resources.utils.utils import log_header
+from resources.utils.utils import log_header, load_config
 
-# config_path = Path("src/resources/utils/configs.json")
+class IngestionValidation:
+    config = load_config()
+    _bronze_path_file = config["storages"]["brew_paths"]["bronze"]
+    _minio_endpoint_url = config["minio"]["endpoint_url"]
+    _minio_access_key = config["minio"]["access_key"]
+    _minio_secret_key = config["minio"]["secret_key"]
+    _storage_brew_bucket = config["storages"]["brew_bucket"]
+    _minio_key_landing = config["storages"]["brew_paths"]["bronze"]
 
-# with config_path.open('r') as config_file:
-#     config = json.load(config_file)
-
-class Ingestion_validation:
-    # _bronze_path_file = Path(config['paths']['bronze'])
-
-
-    # Schema definition for the validation process
+    # Definição do esquema esperado para o processo de validação
     _expected_schema = {
         "id": str,
         "name": str,
@@ -35,86 +34,102 @@ class Ingestion_validation:
         "street": (str, type(None))
     }
 
-    def _validate_files_numbers(self, expected_total_responses: int) -> None:
-        
+    def __init__(self):
+        self.s3_client = boto3.client(
+            's3',
+            endpoint_url=self._minio_endpoint_url,
+            aws_access_key_id=self._minio_access_key,
+            aws_secret_access_key=self._minio_secret_key
+        )
+
+    def _list_files_in_bronze(self):
+        """Lista todos os arquivos no bucket S3 na pasta bronze."""
+        response = self.s3_client.list_objects_v2(
+            Bucket=self._storage_brew_bucket,
+            Prefix=self._minio_key_landing
+        )
+        return [content['Key'] for content in response.get('Contents', [])]
+
+    def _read_s3_file(self, key):
+        """Lê o conteúdo de um arquivo JSON do S3."""
+        response = self.s3_client.get_object(Bucket=self._storage_brew_bucket, Key=key)
+        content = response['Body'].read().decode('utf-8')
+        return json.loads(content)
+
+    def _validate_files_numbers(self, expected_total_responses: int) -> int:
         total_responses = 0
         responses_per_file = []
 
-        # var aux for airflow branch [data quality]
+        # Variável auxiliar para a branch de qualidade de dados no Airflow
         var_validation_ingestion_1 = 0
 
-        msg = "BEGINNING DATA INGESTION [# & TYPE] VALIDATION"
+        msg = "INICIANDO VALIDAÇÃO DE INGESTÃO DE DADOS [QUANTIDADE & TIPO]"
         log_header(msg)
 
-        logging.info('[VALIDATION] -> STARTING [#] VALIDATION')
+        logging.info('[VALIDAÇÃO] -> INICIANDO VALIDAÇÃO DE QUANTIDADE')
 
-        files = sorted(list(glob(str(self._bronze_path_file / '*'))))
-        for num, directory in enumerate(files):
-            with open(directory) as json_file:
-                data = json.load(json_file)
-                responses_per_file.append(len(data))
-                total_responses += len(data)
+        files = self._list_files_in_bronze()
+        for key in files:
+            data = self._read_s3_file(key)
+            responses_per_file.append(len(data))
+            total_responses += len(data)
         try:
             if total_responses != expected_total_responses:
                 var_validation_ingestion_1 = 1
-                raise ValueError(f'Expected total_responses {expected_total_responses}, but got {total_responses}')
-            
-        except  ValueError as e:
-            print(f'Expected total_responses {expected_total_responses}, but got {total_responses}')
+                raise ValueError(f'Esperado {expected_total_responses} respostas, mas obteve {total_responses}')
+        except ValueError as e:
+            logging.error(f'[VALIDAÇÃO] -> ERRO DE QUANTIDADE: {e}')
 
-        
         responses_per_file = Counter(responses_per_file)
         responses_per_file = [
-            f'{responses_per_file.get(n)} {"FILE" if responses_per_file.get(n) == 1 else "FILES"} WITH {n} BREWERIES'
+            f'{responses_per_file.get(n)} {"ARQUIVO" if responses_per_file.get(n) == 1 else "ARQUIVOS"} COM {n} CERVEJARIAS'
             for n in responses_per_file.keys()
         ]
 
         logging.info(
-            f'[VALIDATION] -> TOTAL NUMBER OF FILES SAVED: {len(files)}\n' +
+            f'[VALIDAÇÃO] -> NÚMERO TOTAL DE ARQUIVOS SALVOS: {len(files)}\n' +
             f"\n".join(responses_per_file) +
-            f'\nTOTAL NUMBER OF BREWERIES: {total_responses}'
+            f'\nNÚMERO TOTAL DE CERVEJARIAS: {total_responses}'
         )
-        logging.info('[VALIDATION] -> [#] VALIDATION FINISHED')
+        logging.info('[VALIDAÇÃO] -> VALIDAÇÃO DE QUANTIDADE FINALIZADA')
         return var_validation_ingestion_1
-    
-    def _validate_files_types(self) -> None:
-        logging.info('[VALIDATION] ->STARTING [TYPE] VALIDATION')
 
-        # var aux for airflow branch [data quality]
+    def _validate_files_types(self) -> int:
+        logging.info('[VALIDAÇÃO] -> INICIANDO VALIDAÇÃO DE TIPOS')
+
+        # Variável auxiliar para a branch de qualidade de dados no Airflow
         var_validation_ingestion_2 = 0
-        
-        files = sorted(list(glob(str(self._bronze_path_file / '*'))))
 
-        for directory in files:
-            with open(directory) as json_file:
-                data = json.load(json_file)
+        files = self._list_files_in_bronze()
 
-                # Valida a tipagem de cada registro no arquivo
-                for idx, record in enumerate(data):
-                    for key, expected_type in self._expected_schema.items():
-                        try:
-                            if key not in record:
-                                var_validation_ingestion_2 = 1
-                                raise ValueError(f'Missing key "{key}" in file "{directory}", record index {idx}')
+        for key in files:
+            data = self._read_s3_file(key)
 
-                            if not isinstance(record[key], expected_type):
-                                var_validation_ingestion_2 = 1
-                                raise TypeError(f'Key "{key}" in file "{directory}", record index {idx} expected type {expected_type}, but got {type(record[key])}')
-                        except (ValueError, TypeError) as e:
-                            logging.error(f'[VALIDATION] -> [TYPE] ERROR: {e}')
-                            
+            # Valida a tipagem de cada registro no arquivo
+            for idx, record in enumerate(data):
+                for field, expected_type in self._expected_schema.items():
+                    try:
+                        if field not in record:
+                            var_validation_ingestion_2 = 1
+                            raise ValueError(f'Campo "{field}" ausente no arquivo "{key}", índice de registro {idx}')
 
-        logging.info('[VALIDATION] -> [TYPE] VALIDATION FINISHED')
-        msg = '[VALIDATION] -> FILE VALIDATION FINISHED'
+                        if not isinstance(record[field], expected_type):
+                            var_validation_ingestion_2 = 1
+                            raise TypeError(f'Campo "{field}" no arquivo "{key}", índice de registro {idx} esperado tipo {expected_type}, mas obteve {type(record[field])}')
+                    except (ValueError, TypeError) as e:
+                        logging.error(f'[VALIDAÇÃO] -> ERRO DE TIPO: {e}')
+
+        logging.info('[VALIDAÇÃO] -> VALIDAÇÃO DE TIPOS FINALIZADA')
+        msg = '[VALIDAÇÃO] -> VALIDAÇÃO DE ARQUIVOS FINALIZADA'
         log_header(msg)
 
         return var_validation_ingestion_2
 
-    
-    def validation_execute(self):
+    def validation_execute(self) -> int:
         page_data = BreweryRequestsApi()._total_pages()
         total_records_api = page_data['total_records']
         var_validation_ingestion_1 = self._validate_files_numbers(expected_total_responses=total_records_api)
         var_validation_ingestion_2 = self._validate_files_types()
         
+        print(var_validation_ingestion_1 + var_validation_ingestion_2)
         return var_validation_ingestion_1 + var_validation_ingestion_2

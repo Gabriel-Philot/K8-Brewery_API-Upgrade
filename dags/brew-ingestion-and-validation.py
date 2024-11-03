@@ -16,9 +16,10 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 
 
+# TODO DAG and task defaults
+
 DAGS_FOLDER_PATH = path.dirname(__file__)
 
-# TODO DAG and task defaults
 default_args = {
     "owner": "user",
     "depends_on_past": False,
@@ -29,9 +30,6 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-
-
-# TODO DAG and task defaults
 @dag(
     dag_id="brewapi-ingestion-validation-minio",
     default_args=default_args,
@@ -48,6 +46,7 @@ default_args = {
 def brewapi_ingestion_validation_minio():
     """Main DAG for Berewery ingestion and validation"""
 
+    # TODO define tasks ingestion
     @task_group(group_id='ingestion')
     def ingestion_group():
         @task
@@ -57,7 +56,7 @@ def brewapi_ingestion_validation_minio():
 
         ingestion = KubernetesPodOperator(
             task_id="brewapi-ingestion-minio",
-            name="api-test-pod2",
+            name="brewapi-ingestion-minio",
             is_delete_operator_pod=True,
             namespace="orchestrator",
             pod_template_file=f"{DAGS_FOLDER_PATH}/python_jobs/brewapi_ingestion.yaml",
@@ -78,11 +77,35 @@ def brewapi_ingestion_validation_minio():
             end_ingestion()
         )
 
+    # TODO define tasks validation
     @task_group(group_id='validation')
     def validation_group():
         @task
         def start_validation():
             print("Starting the validation part of the DAG")
+
+        validation = KubernetesPodOperator(
+            task_id="brewapi-ingestion-validation-minio",
+            name="brewapi-validation-minio",
+            is_delete_operator_pod=True,
+            namespace="orchestrator",
+            pod_template_file=f"{DAGS_FOLDER_PATH}/python_jobs/brewapi_validation.yaml",
+            kubernetes_conn_id="kubernetes_default",
+            in_cluster=True,
+            get_logs=True,
+            do_xcom_push=True
+        )
+
+        @task(task_id="print_xcom_value")
+        def print_xcom_value(**kwargs):
+            # Recupera o contexto da tarefa
+            ti = kwargs['ti']
+            # Define o task_id da tarefa que gerou o XCom
+            source_task_id = 'brewapi-ingestion-validation-minio'
+            # Recupera o valor do XCom
+            xcom_value = ti.xcom_pull(task_ids=source_task_id)
+            # Imprime o valor do XCom
+            print(f"Valor do XCom da tarefa '{source_task_id}': {xcom_value}")
 
         @task
         def end_validation():
@@ -90,6 +113,8 @@ def brewapi_ingestion_validation_minio():
         
         chain(
             start_validation(),
+            validation,
+            print_xcom_value(),
             end_validation()
         )
 
