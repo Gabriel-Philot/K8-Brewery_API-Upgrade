@@ -43,7 +43,7 @@ default_args = {
 
 # MUDAR NOME DEPOIS
 dag = DAG(
-    "first-test-pipe",
+    "ingestion-validation",
     default_args=default_args,
     schedule_interval="@once",
     tags=["spark", "kubernetes", "s3", "sensor", "minio", "bronze", "silver"],
