@@ -64,8 +64,7 @@ def brewapi_ingestion_validation_minio():
             kubernetes_conn_id="kubernetes_default",
             in_cluster=True,
             get_logs=True,
-            do_xcom_push=True,
-            dag=dag,
+            do_xcom_push=True
         )
 
 
