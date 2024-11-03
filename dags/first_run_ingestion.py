@@ -51,13 +51,14 @@ dag = DAG(
 
 start = DummyOperator(task_id='start', dag=dag)
 
+# Alterar após primeiro teste aqui
 
 ingestion = KubernetesPodOperator(
     task_id="tastk_ingestion_bronze_table",
-    name="api-test-pod2",
+    name="brewapi-ingestion-minio",
     is_delete_operator_pod=True,
     namespace="orchestrator",
-    pod_template_file=f"{DAGS_FOLDER_PATH}/python_jobs/testev0.yaml",
+    pod_template_file=f"{DAGS_FOLDER_PATH}/python_jobs/brewapi_ingestion.yaml",
     kubernetes_conn_id="kubernetes_default",
     in_cluster=True,
     get_logs=True,

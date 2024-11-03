@@ -24,6 +24,7 @@ kubectl create namespace cicd
 kubectl create namespace app
 kubectl create namespace management
 kubectl create namespace misc
+kubectl create namespace monitoring
 ```
 
 Instale o argocd que será responsavel por manter nossas aplicações:
@@ -236,8 +237,17 @@ DAGS_FOLDER_PATH = path.dirname(__file__) in K8podOperator task.
 ```sh
 # ingestion image
 eval $(minikube docker-env)
-docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.2
+docker build --no-cache -f images/python/dockerfile images/python/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+
+# here dont forget if change this name, change it into dags yamls
+
+# for cloud deploy this image should be pushed into a repo.
 ```
+<!-- old version
+eval $(minikube docker-env)
+docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.2
+-->
+
 > aqui só quando tiver concertado remind to change it in to dags python jobs 
 
 ### Commands for debuging if needed
@@ -246,10 +256,10 @@ dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
 ```sh
 # ir até o path da do yaml
-kubectl apply -f testev0.yaml -n orchestrator
+kubectl apply -f brewapi_ingestion.yaml -n orchestrator
 
 
-kubectl logs api-test-pod2 -n orchestrator -c python-container
+kubectl logs brewapi-ingestion-minio -n orchestrator -c python-container
 
 ```
 >[!Note]
