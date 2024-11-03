@@ -4,13 +4,20 @@ import logging
 import boto3
 from pathlib import Path
 from datetime import datetime
-from resources.utils.utils import log_header
+from resources.utils.utils import log_header, load_config
 
 
 
 # Main class to interact with the OpenBreweryDB API
 class BreweryRequestsApi:
-    _Url_Brewery_API = "https://api.openbrewerydb.org/v1/breweries"
+    config = load_config()
+
+    _Url_Brewery_API = config['apis']['brew_api']['url']
+    _minio_endpoint_url = config['minio_dev']['enpoint_url']
+    _minio_access_key = config['minio_dev']['access_key']
+    _minio_secret_key = config['minio_dev']['secret_key']
+    _minio_key_landing = config['storages']['brew_landing_key']['lading']
+    _storage_brew_bucket = config['storages']['brew_bucket']['name']
 
     def __init__(self, per_page: int = 100):
         self.per_page = per_page
@@ -37,14 +44,14 @@ class BreweryRequestsApi:
         try:
             s3_client = boto3.client(
                 's3',
-                endpoint_url = 'http://minio.deepstorage.svc.cluster.local:9000',  # Alterar para o seu endpoint MinIO
-                aws_access_key_id='miniouser',    # Coloque sua chave de acesso
-                aws_secret_access_key='miniosecret' # Coloque sua chave secreta
+                endpoint_url = self._minio_endpoint_url,  
+                aws_access_key_id= self._minio_access_key,  
+                aws_secret_access_key= self._minio_secret_key
             )
 
             # lakehouse/bronze_layer
-            bucket_name = 'lakehouse'
-            key = f"bronze_layer/{file_name}"
+            bucket_name = self._storage_brew_bucket
+            key = f"{self._minio_key_landing}/{file_name}"
 
             # Carrega o arquivo JSON para o MinIO
             s3_client.put_object(Bucket=bucket_name, Key=key, Body=data_to_save_json)

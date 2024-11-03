@@ -1,4 +1,7 @@
 """
+Dag for ingestion & validation
+using the taskflow API, KubernetesPodOperator and Dataset
+
 """
 
 from datetime import timedelta

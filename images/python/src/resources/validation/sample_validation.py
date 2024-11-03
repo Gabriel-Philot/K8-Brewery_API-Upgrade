@@ -6,13 +6,13 @@ import logging
 from resources.brew_api.brewapi_bronze import BreweryRequestsApi
 from resources.utils.utils import log_header
 
-config_path = Path("src/resources/utils/configs.json")
+# config_path = Path("src/resources/utils/configs.json")
 
-with config_path.open('r') as config_file:
-    config = json.load(config_file)
+# with config_path.open('r') as config_file:
+#     config = json.load(config_file)
 
 class Ingestion_validation:
-    _bronze_path_file = Path(config['paths']['bronze'])
+    # _bronze_path_file = Path(config['paths']['bronze'])
 
 
     # Schema definition for the validation process
