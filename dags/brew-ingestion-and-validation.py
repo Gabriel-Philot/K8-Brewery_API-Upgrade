@@ -96,24 +96,23 @@ def brewapi_ingestion_validation_minio():
             do_xcom_push=True
         )
 
-        # ajustar fluxo para caso esse cara retorne zero ativar uma task que rode o dataset.
         @task()
-        def print_xcom_value(**kwargs):
-            # Recupera o contexto da tarefa
+        def validation_xcom_pull(**kwargs):
             ti = kwargs['ti']
-            # Define o task_id da tarefa que gerou o XCom
             source_task_id = 'validation.brewapi-ingestion-validation-minio'
             
-            # Recupera o valor do XCom, incluindo execuções anteriores se necessário
             xcom_value = ti.xcom_pull(task_ids=source_task_id, key='return_value')
 
             value = xcom_value['return_value']
 
-            # Verifica se o valor do XCom foi retornado corretamente
-            if xcom_value is not None:
-                print(f"Valor do XCom da tarefa '{source_task_id}': {value}")
+            if value == 0:
+                @task(outlets=[Dataset("dataset")])
+                def dataset():
+                    print("Dataset created")
+                dataset()
             else:
-                print(f"Nenhum valor XCom encontrado para a tarefa '{source_task_id}'")
+                print("Validation failed")
+
                 
         @task
         def end_validation():
@@ -122,13 +121,19 @@ def brewapi_ingestion_validation_minio():
         chain(
             start_validation(),
             validation,
-            print_xcom_value(),
+            validation_xcom_pull(),
             end_validation()
         )
+
 
     ingestion = ingestion_group()
     validation = validation_group()
 
-    ingestion >> validation
+
+    chain(
+        ingestion,
+        validation
+    )
+
     
 dag = brewapi_ingestion_validation_minio()
