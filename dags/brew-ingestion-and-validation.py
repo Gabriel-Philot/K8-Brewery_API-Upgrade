@@ -127,14 +127,12 @@ def brewapi_ingestion_validation_minio():
         def decide_and_branch(xcom_value: int):
             if xcom_value == 0:
                 print("\t ********* Validation passed - will update dataset. ******** \t")
-                return "update_dataset"
+                return update_dataset()
             else:
                 print("Validation failed - skipping dataset update.")
-                return "end_validation"
+                return end_validation()
         
         
-        
-        decide_and_branch(xcom_value=validation_xcom_pull())
 
         chain(
             start_validation(),
