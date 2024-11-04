@@ -17,8 +17,6 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 
 
 # Dataset for processing trigger
-dataset_trigger = Dataset('brew-api-ingestion-validation-complete')
-
 
 # TODO DAG and task defaults
 
@@ -52,7 +50,7 @@ def brewapi_ingestion_validation_minio():
 
 
     # TODO define tasks update_dataset
-    @task(outlets=[dataset_trigger])
+    @task(outlets=[Dataset("s3://brew-api/example.csv")])
     def update_dataset():
         print("Updating dataset")
 
