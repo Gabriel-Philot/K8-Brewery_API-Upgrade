@@ -136,17 +136,17 @@ def brewapi_ingestion_validation_minio():
 
         join_task = EmptyOperator(task_id="join_task")
         
-        # validation_result = validation_xcom_pull()
-        # chose_branch_result = chose_branch(validation_result)
+        validation_result = validation_xcom_pull()
+        chose_branch_result = chose_branch(validation_result)
 
         chain(
             start_validation(),
             validation,
-            chose_branch(validation_xcom_pull())
+            validation_result,
+            chose_branch_result,
             [update_dataset(), non_update_dataset_task()],
             join_task,
-            end_validation()
-            
+            end_validation()   
         )
 
 
