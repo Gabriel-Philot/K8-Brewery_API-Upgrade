@@ -20,8 +20,8 @@ Here, I will mainly transform the data source and Docker images to fit my own us
 ### In Dev:
 
 * Protheus or grafana
+* Good practices airflow
 
 ### Next Steps:
 
-* Good practices airflow
 * Deploy it on a cloud.

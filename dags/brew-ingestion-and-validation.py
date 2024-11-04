@@ -96,6 +96,7 @@ def brewapi_ingestion_validation_minio():
             do_xcom_push=True
         )
 
+        # ajustar fluxo para caso esse cara retorne zero ativar uma task que rode o dataset.
         @task()
         def print_xcom_value(**kwargs):
             # Recupera o contexto da tarefa
