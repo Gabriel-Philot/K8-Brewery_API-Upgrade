@@ -7,6 +7,7 @@ using the taskflow API, KubernetesPodOperator and Dataset
 # TODO define libraries and imports
 from airflow import Dataset
 from airflow.decorators import dag, task, task_group
+from airflow.operators.empty import EmptyOperator
 from airflow.utils.task_group import TaskGroup
 from airflow.models.baseoperator import chain
 from datetime import datetime, timedelta
@@ -133,7 +134,7 @@ def brewapi_ingestion_validation_minio():
         def end_validation():
             print("Ending the validation part of the DAG")
 
-        
+        join_task = EmptyOperator(task_id="join_task")
         
         # validation_result = validation_xcom_pull()
         # chose_branch_result = chose_branch(validation_result)
@@ -143,7 +144,9 @@ def brewapi_ingestion_validation_minio():
             validation,
             chose_branch(validation_xcom_pull())
             [update_dataset(), non_update_dataset_task()],
+            join_task,
             end_validation()
+            
         )
 
 
