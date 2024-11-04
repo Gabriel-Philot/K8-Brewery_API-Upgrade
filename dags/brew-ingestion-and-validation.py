@@ -111,32 +111,35 @@ def brewapi_ingestion_validation_minio():
             xcom_value = ti.xcom_pull(task_ids=source_task_id, key='return_value')
             value = xcom_value['return_value']
 
-            print("\t ********** XCOM VALUE ********** \t")
-            print(f" \t ********** Return value: {value} ********** \t")
-            print("\t ******************************** \t")
-
-            if value == 0:
-                print("\t *********  Validation passed - dataset updated. ******** \t")
-
-                # update_dataset() 
-            else:
-                print("Validation failed - dataset not updated.")
+            return value
+        
 
         # TODO define tasks update_dataset
-        @task(outlets=[Dataset("s3://brew-api/example.csv")])
+        @task(outlets=[Dataset("brew-api/ingestion-validation")])
         def update_dataset():
             print("Updating dataset")
                 
         @task
         def end_validation():
             print("Ending the validation part of the DAG")
+
+        @task
+        def decide_and_branch(xcom_value: int):
+            if xcom_value == 0:
+                print("\t ********* Validation passed - will update dataset. ******** \t")
+                return "update_dataset"
+            else:
+                print("Validation failed - skipping dataset update.")
+                return "end_validation"
         
+        
+        
+        decide_and_branch(xcom_value=validation_xcom_pull())
+
         chain(
             start_validation(),
             validation,
-            validation_xcom_pull(),
-            update_dataset(),
-            end_validation()
+            decide_and_branch(xcom_value=validation_xcom_pull())
         )
 
 
