@@ -113,9 +113,18 @@ def brewapi_ingestion_validation_minio():
 
             return value
         
+        @task.branch
+        def chose_branch(validation_result: int):
+            if validation_result == 0:
+                return 'validation.update_dataset'
+            else:
+                return 'validation.non_update_dataset_task'
 
-        # TODO define tasks update_dataset
-        @task(outlets=[Dataset("brew-api/ingestion-validation")])
+        @task 
+        def non_update_dataset_task():
+            print("Not updating dataset")
+
+        @task(outlets=[Dataset("s3://brew-api/example.csv")])
         def update_dataset():
             print("Updating dataset")
                 
@@ -123,22 +132,23 @@ def brewapi_ingestion_validation_minio():
         def end_validation():
             print("Ending the validation part of the DAG")
 
-        @task
-        def decide_and_branch(xcom_value: int):
-            if xcom_value == 0:
-                print("\t ********* Validation passed - will update dataset. ******** \t")
-                return update_dataset()
-            else:
-                print("Validation failed - skipping dataset update.")
-                return end_validation()
         
         
+        validation_result = validation_xcom_pull()
+        chose_branch_result = chose_branch(validation_result)
 
         chain(
             start_validation(),
             validation,
-            decide_and_branch(xcom_value=validation_xcom_pull())
+            validation_result,
+            chose_branch_result,
+            [update_dataset(), non_update_dataset_task()],
+            end_validation()
+
         )
+
+
+
 
 
     # TODO Final chain
