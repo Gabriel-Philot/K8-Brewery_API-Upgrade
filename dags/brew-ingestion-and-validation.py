@@ -50,6 +50,12 @@ default_args = {
 def brewapi_ingestion_validation_minio():
     """Main DAG for Berewery ingestion and validation"""
 
+
+    # TODO define tasks update_dataset
+    @task(outlets=[dataset_trigger])
+    def update_dataset():
+        print("Updating dataset")
+
     # TODO define tasks ingestion
     @task_group(group_id='ingestion')
     def ingestion_group():
@@ -100,28 +106,21 @@ def brewapi_ingestion_validation_minio():
             do_xcom_push=True
         )
 
-        @task()
+        @task
         def validation_xcom_pull(**kwargs):
             ti = kwargs['ti']
             source_task_id = 'validation.brewapi-ingestion-validation-minio'
-            
             xcom_value = ti.xcom_pull(task_ids=source_task_id, key='return_value')
-
             value = xcom_value['return_value']
 
             print("\t ********** XCOM VALUE ********** \t")
-
-            print(f" \t ********** {source_task_id} return value: {value} ********** \t")
-
+            print(f" \t ********** Return value: {value} ********** \t")
             print("\t ******************************** \t")
 
             if value == 0:
-                @task(outlets=[dataset_trigger])
-                def update_dataset():
-                    print("Dataset created")
-                update_dataset()
+                update_dataset() 
             else:
-                print("Validation failed")
+                print("Validation failed - dataset not updated.")
 
                 
         @task
