@@ -12,7 +12,7 @@ development:
     brew_landing_key:
       lading: "bronze"
   minio_dev:
-    enpoint_url: "http://minio.deepstorage.svc.cluster.local:9000"
+    endpoint_url: "http://minio.deepstorage.svc.cluster.local:9000"
     access_key: "miniouser"
     secret_key: "miniosecret"
 

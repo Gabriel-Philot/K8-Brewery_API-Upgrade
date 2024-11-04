@@ -13,7 +13,7 @@ class BreweryRequestsApi:
     config = load_config()
 
     _Url_Brewery_API = config['apis']['brew_api']['url']
-    _minio_endpoint_url = config['minio_dev']['enpoint_url']
+    _minio_endpoint_url = config['minio_dev']['endpoint_url']
     _minio_access_key = config['minio_dev']['access_key']
     _minio_secret_key = config['minio_dev']['secret_key']
     _minio_key_landing = config['storages']['brew_landing_key']['lading']
