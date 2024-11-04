@@ -124,7 +124,7 @@ def brewapi_ingestion_validation_minio():
         def non_update_dataset_task():
             print("Not updating dataset")
 
-        @task(outlets=[Dataset("s3://brew-api/example.csv")])
+        @task(outlets=[Dataset("s3://brew-api/ingestion-validation")])
         def update_dataset():
             print("Updating dataset")
                 
