@@ -111,7 +111,7 @@ def brewapi_ingestion_validation_minio():
 
             print("\n ********** XCOM VALUE ********** \n")
 
-            print(xcom_value)
+            print(value)
 
             print("\n ******************************** \n")
 
