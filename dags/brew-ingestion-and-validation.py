@@ -107,14 +107,11 @@ def brewapi_ingestion_validation_minio():
             xcom_value = ti.xcom_pull(task_ids=source_task_id, include_prior_dates=True)
         
             # Exibe o valor do XCom, mesmo que seja zero
-            if xcom_value is not None:
-                # Exibe o conteúdo exato do valor retornado
-                print(f"Valor do XCom da tarefa '{source_task_id}': {xcom_value}")
-                # Verifica especificamente se "return_value" está presente
-                return_value = xcom_value.get("return_value", "Chave 'return_value' não encontrada")
-                print(f"Conteúdo de 'return_value': {return_value}")
+            if isinstance(xcom_value, dict) and "return_value" in xcom_value:
+                return_value = xcom_value["return_value"]
+                print(f"Valor do XCom da tarefa '{source_task_id}': {return_value}")
             else:
-                print(f"Nenhum valor XCom encontrado para a tarefa '{source_task_id}'")
+                print(f"Nenhum valor XCom válido encontrado para a tarefa '{source_task_id}'")
 
         @task
         def end_validation():
