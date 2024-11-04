@@ -49,10 +49,10 @@ def brewapi_ingestion_validation_minio():
     """Main DAG for Berewery ingestion and validation"""
 
 
-    # TODO define tasks update_dataset
-    @task(outlets=[Dataset("s3://brew-api/example.csv")])
-    def update_dataset():
-        print("Updating dataset")
+    # # TODO define tasks update_dataset
+    # @task(outlets=[Dataset("s3://brew-api/example.csv")])
+    # def update_dataset():
+    #     print("Updating dataset")
 
     # TODO define tasks ingestion
     @task_group(group_id='ingestion')
@@ -118,10 +118,14 @@ def brewapi_ingestion_validation_minio():
             if value == 0:
                 print("\t *********  Validation passed - dataset updated. ******** \t")
 
-                update_dataset() 
+                # update_dataset() 
             else:
                 print("Validation failed - dataset not updated.")
 
+        # TODO define tasks update_dataset
+        @task(outlets=[Dataset("s3://brew-api/example.csv")])
+        def update_dataset():
+            print("Updating dataset")
                 
         @task
         def end_validation():
@@ -131,6 +135,7 @@ def brewapi_ingestion_validation_minio():
             start_validation(),
             validation,
             validation_xcom_pull(),
+            update_dataset(),
             end_validation()
         )
 
