@@ -143,7 +143,8 @@ def brewapi_ingestion_validation_minio():
 
     
         start_validation() >> validation >> validation_result >> chose_branch_result
-        chose_branch_result >> [update_dataset(), non_update_dataset_task()] >> join_task() >> end_validation()        
+        chose_branch_result >> [update_dataset(), non_update_dataset_task()] 
+        end_validation()        
 
     # TODO Final chain
 
