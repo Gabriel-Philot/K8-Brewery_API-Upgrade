@@ -96,7 +96,7 @@ def brewapi_ingestion_validation_minio():
             do_xcom_push=True
         )
 
-        @task(task_id="print_xcom_value")
+        @task()
         def print_xcom_value(**kwargs):
             # Recupera o contexto da tarefa
             ti = kwargs['ti']
