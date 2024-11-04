@@ -109,6 +109,12 @@ def brewapi_ingestion_validation_minio():
 
             value = xcom_value['return_value']
 
+            print("\n ********** XCOM VALUE ********** \n")
+
+            print(xcom_value)
+
+            print("\n ******************************** \n")
+
             if value == 0:
                 @task(outlets=[dataset_trigger])
                 def update_dataset():
@@ -129,6 +135,8 @@ def brewapi_ingestion_validation_minio():
             end_validation()
         )
 
+
+    # TODO Final chain
 
     ingestion = ingestion_group()
     validation = validation_group()
