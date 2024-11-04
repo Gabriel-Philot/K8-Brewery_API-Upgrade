@@ -139,8 +139,8 @@ def brewapi_ingestion_validation_minio():
         chose_branch_result = chose_branch(validation_result)
 
     
-        start_validation >> validation >> validation_result
-        chose_branch_result >> [update_dataset, non_update_dataset_task] >> end_validation
+        start_validation() >> validation >> validation_result
+        chose_branch_result >> [update_dataset(), non_update_dataset_task()] >> end_validation()
         
                
 
