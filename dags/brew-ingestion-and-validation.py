@@ -111,6 +111,7 @@ def brewapi_ingestion_validation_minio():
             xcom_value = ti.xcom_pull(task_ids=source_task_id, key='return_value')
             value = xcom_value['return_value']
 
+            print(f" **************{value} **************** ***")
             return value
         
         @task.branch
@@ -134,17 +135,15 @@ def brewapi_ingestion_validation_minio():
 
         
         
-        validation_result = validation_xcom_pull()
-        chose_branch_result = chose_branch(validation_result)
+        # validation_result = validation_xcom_pull()
+        # chose_branch_result = chose_branch(validation_result)
 
         chain(
             start_validation(),
             validation,
-            validation_result,
-            chose_branch_result,
+            chose_branch(validation_xcom_pull())
             [update_dataset(), non_update_dataset_task()],
             end_validation()
-
         )
 
 
