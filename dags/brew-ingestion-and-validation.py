@@ -16,6 +16,10 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
 )
 
 
+# Dataset for processing trigger
+dataset_trigger = Dataset('brew-api-ingestion-validation-complete')
+
+
 # TODO DAG and task defaults
 
 DAGS_FOLDER_PATH = path.dirname(__file__)
@@ -106,10 +110,10 @@ def brewapi_ingestion_validation_minio():
             value = xcom_value['return_value']
 
             if value == 0:
-                @task(outlets=[Dataset("dataset")])
-                def dataset():
+                @task(outlets=[dataset_trigger])
+                def update_dataset():
                     print("Dataset created")
-                dataset()
+                update_dataset()
             else:
                 print("Validation failed")
 
