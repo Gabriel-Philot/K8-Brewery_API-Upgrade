@@ -109,11 +109,11 @@ def brewapi_ingestion_validation_minio():
 
             value = xcom_value['return_value']
 
-            print("\n ********** XCOM VALUE ********** \n")
+            print("\t ********** XCOM VALUE ********** \t")
 
-            print(value)
+            print(f" \t ********** {source_task_id} return value: {value} ********** \t")
 
-            print("\n ******************************** \n")
+            print("\t ******************************** \t")
 
             if value == 0:
                 @task(outlets=[dataset_trigger])
