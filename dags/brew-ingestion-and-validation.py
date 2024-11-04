@@ -118,6 +118,8 @@ def brewapi_ingestion_validation_minio():
             print("\t ******************************** \t")
 
             if value == 0:
+                print("\t *********  Validation passed - dataset updated. ******** \t")
+
                 update_dataset() 
             else:
                 print("Validation failed - dataset not updated.")
