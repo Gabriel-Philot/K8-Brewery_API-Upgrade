@@ -134,15 +134,12 @@ def brewapi_ingestion_validation_minio():
         def end_validation():
             print("Ending the validation part of the DAG")
 
-        @task
-        def join_task():
-            print("Joining the validation part of the DAG")
         
         validation_result = validation_xcom_pull()
         chose_branch_result = chose_branch(validation_result)
 
     
-        start_validation() >> validation >> validation_result >> chose_branch_result
+        start_validation() >> validation >> validation_result
         chose_branch_result >> [update_dataset(), non_update_dataset_task()] 
                
 
