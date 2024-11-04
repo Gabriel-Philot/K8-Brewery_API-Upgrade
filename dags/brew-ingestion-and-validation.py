@@ -152,9 +152,6 @@ def brewapi_ingestion_validation_minio():
         )
 
 
-
-
-
     # TODO Final chain
 
     ingestion = ingestion_group()
