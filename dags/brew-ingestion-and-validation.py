@@ -104,7 +104,7 @@ def brewapi_ingestion_validation_minio():
             source_task_id = 'brewapi-ingestion-validation-minio'
             
             # Recupera o valor do XCom, incluindo execuções anteriores se necessário
-            xcom_value = ti.xcom_pull(task_ids=source_task_id, include_prior_dates=True)
+            xcom_value = ti.xcom_pull(task_ids=source_task_id)
         
             # Exibe o valor do XCom, mesmo que seja zero
             if isinstance(xcom_value, dict) and "return_value" in xcom_value:
