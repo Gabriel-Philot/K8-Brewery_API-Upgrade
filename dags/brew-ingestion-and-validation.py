@@ -49,12 +49,6 @@ default_args = {
 def brewapi_ingestion_validation_minio():
     """Main DAG for Berewery ingestion and validation"""
 
-
-    # # TODO define tasks update_dataset
-    # @task(outlets=[Dataset("s3://brew-api/example.csv")])
-    # def update_dataset():
-    #     print("Updating dataset")
-
     # TODO define tasks ingestion
     @task_group(group_id='ingestion')
     def ingestion_group():
@@ -148,9 +142,8 @@ def brewapi_ingestion_validation_minio():
             [update_dataset(), non_update_dataset_task()],
             end_validation()
         )
-    
-        # start_validation() >> validation >> validation_result
-        # chose_branch_result >> [update_dataset(), non_update_dataset_task()] >> end_validation()
+
+        # need to fix the final chain result are not going from update to end
         
                
 
