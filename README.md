@@ -16,11 +16,11 @@ Here, I will mainly transform the data source and Docker images to fit my own us
 * Process v0
 * Fix ingestion (look in instructions - pre-total-guide.md)
 
-
 ### In Dev:
 
-* Protheus or grafana
-* Good practices airflow
+* Protheus or grafana (Still needs metrics)
+* Good practices airflow (still need polish)
+* Jupyter -> With minio data
 
 ### Next Steps:
 
