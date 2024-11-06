@@ -3,21 +3,23 @@ import os
 from os.path import abspath
 from datetime import datetime
 import logging
+from resources.utils import load_config
 from resources.gold_utils import (
     gold_table,
     gold_modelling,
     time_update_gold
 )
 
-from resources.conf_paths import (
-    silver_layer_path,
-    gold_layer_path
-)
-
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 from delta import DeltaTable
+
+config = load_config()
+
+# bronze_layer_path = config['storages']["brew_paths"]['bronze']
+silver_layer_path = config['storages']["brew_paths"]['silver']
+gold_layer_path = config['storages']["brew_paths"]['gold']
 
 
 

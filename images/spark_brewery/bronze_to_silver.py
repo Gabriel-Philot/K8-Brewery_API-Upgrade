@@ -2,18 +2,22 @@ import os
 from os.path import abspath
 from datetime import datetime
 import logging
+from resources.utils import load_config
 from resources.silver_utils import (
     SCHEMA_RAW_DATA,
     adjusting_column_types,
     clean_columns_for_silver
 )
-from resources.conf_paths import (
-    bronze_layer_path,
-    silver_layer_path
-)
+
 from pyspark import SparkConf
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
+
+
+config = load_config()
+
+bronze_layer_path = config['storages']["brew_paths"]['bronze']
+silver_layer_path = config['storages']["brew_paths"]['silver']
 
 
 
