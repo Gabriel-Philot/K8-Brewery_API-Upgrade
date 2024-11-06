@@ -16,7 +16,7 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-from airflow.providers.cncf.kubernetes.sensors.kubernetes_pod import (
+from airflow.sensors.kubernetes_pod_sensor import (
     KubernetesPodSensor
 ) 
 
