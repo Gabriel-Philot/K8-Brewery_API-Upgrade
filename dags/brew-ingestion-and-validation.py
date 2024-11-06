@@ -16,7 +16,6 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-
 # Dataset for processing trigger
 
 brew_api_dataset =Dataset("s3://brew-api/ingestion-validation")
