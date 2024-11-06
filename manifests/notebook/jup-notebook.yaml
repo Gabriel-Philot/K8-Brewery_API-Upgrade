@@ -28,9 +28,6 @@ spec:
             requests:
               memory: "512Mi"
               cpu: "500m"
-          image:
-            name: jupyter/datascience-notebook
-            tag: latest
           extraEnv:
             MINIO_ENDPOINT: "http://minio-service.deepstorage.svc.cluster.local:9000"
             MINIO_ACCESS_KEY:
