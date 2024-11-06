@@ -30,7 +30,7 @@ from datetime import timedelta
 
 # [START import_module]
 # The DAG object; we'll need this to instantiate a DAG
-from airflow import DAG
+from airflow import DAG, Dataset
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.providers.amazon.aws.operators.s3 import S3ListOperator
 from airflow.providers.amazon.aws.sensors.s3 import S3KeySensor, S3KeysUnchangedSensor
@@ -45,6 +45,8 @@ from airflow.providers.cncf.kubernetes.sensors.spark_kubernetes import (
 from airflow.utils.dates import days_ago
 
 # [END import_module]
+
+dataset = Dataset("s3://brew-api/ingestion-validation")
 
 # [START default_args]
 # These args will get passed on to each operator
@@ -67,7 +69,7 @@ default_args = {
 dag = DAG(
     "after_bronze_pipe",
     default_args=default_args,
-    schedule_interval="@once",
+    schedule=[dataset],
     tags=["spark", "kubernetes", "s3", "sensor", "minio", "bronze", "silver"],
 )
 # [END instantiate_dag]

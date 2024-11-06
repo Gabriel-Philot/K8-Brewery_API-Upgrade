@@ -16,10 +16,10 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-from airflow.providers.cncf.kubernetes.sensors.pod import KubernetesPodSensor
-
 
 # Dataset for processing trigger
+
+brew_api_dataset =Dataset("s3://brew-api/ingestion-validation")
 
 # TODO DAG and task defaults
 
@@ -122,7 +122,7 @@ def brewapi_ingestion_validation_minio():
         def non_update_dataset_task():
             print("Not updating dataset")
 
-        @task(outlets=[Dataset("s3://brew-api/ingestion-validation")])
+        @task(outlets=[brew_api_dataset])
         def update_dataset():
             print("Updating dataset")
                 
