@@ -25,6 +25,7 @@ kubectl create namespace app
 kubectl create namespace management
 kubectl create namespace misc
 kubectl create namespace monitoring
+kubectl create namespace jupyter
 ```
 
 Instale o argocd que será responsavel por manter nossas aplicações:
