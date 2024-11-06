@@ -313,3 +313,11 @@ echo "password: $(kubectl get secret minio-secrets -n deepstorage -o jsonpath="{
 ```
 
 check out the dag in airflow UI + logs, and the files at MiniO.
+
+
+## Jupyter-notebook [acessing the data]
+
+```sh
+# notebook
+kubectl apply -f manifests/notebook/jup-notebook.yaml
+```

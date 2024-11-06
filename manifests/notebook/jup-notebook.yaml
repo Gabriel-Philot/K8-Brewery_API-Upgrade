@@ -4,7 +4,7 @@ metadata:
   name: jupyter
   annotations:
     argocd.argoproj.io/sync-wave: "8"
-  namespace: argocd
+  namespace: cicd
 spec:
   destination:
     server: 'https://kubernetes.default.svc'
@@ -28,22 +28,9 @@ spec:
             requests:
               memory: "512Mi"
               cpu: "500m"
-        singleuser:
-          profileList:
-            - display_name: "Python Data Science"
-              description: "Ambiente com pacotes para análise de dados"
-              default: true
           image:
             name: jupyter/datascience-notebook
             tag: latest
-          extraPackages:
-            - duckdb
-            - pandas
-            - requests
-            - pyyaml
-            - json5
-          storage:
-            type: none
           extraEnv:
             MINIO_ENDPOINT: "http://minio-service.deepstorage.svc.cluster.local:9000"
             MINIO_ACCESS_KEY:
@@ -56,11 +43,7 @@ spec:
                 secretKeyRef:
                   name: minio-secrets
                   key: root-password
-        service:
-          type: ClusterIP  # Mudando para ClusterIP pois vamos acessar via tunnel
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
