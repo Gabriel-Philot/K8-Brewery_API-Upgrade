@@ -16,9 +16,8 @@ from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import (
     KubernetesPodOperator,
 )
 
-from airflow.sensors.kubernetes_pod_sensor import (
-    KubernetesPodSensor
-) 
+from airflow.providers.cncf.kubernetes.sensors.kubernetes_pod import KubernetesPodSensor
+
 
 # Dataset for processing trigger
 
