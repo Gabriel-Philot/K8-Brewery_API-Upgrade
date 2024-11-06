@@ -324,3 +324,4 @@ kubectl apply -f manifests/notebook/jup-notebook.yaml
 
 external-id public + 80 da porta
 http://10.104.108.13:80
+
