@@ -67,7 +67,7 @@ default_args = {
 # [START instantiate_dag]
 
 dag = DAG(
-    "after_bronze_pipe",
+    "brew-process-transformation",
     default_args=default_args,
     schedule=[dataset],
     tags=["spark", "kubernetes", "s3", "sensor", "minio", "bronze", "silver"],
