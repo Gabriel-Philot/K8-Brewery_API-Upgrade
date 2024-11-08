@@ -13,12 +13,12 @@ First of all, I want to thanks [GersonRS](https://github.com/GersonRS) for the a
 
 * Process v0
 * Fix ingestion (look in instructions - pre-total-guide.md)
+* Configured jupyter lab with DuckDb configs to acess Minio-Lakehouse data.
 
 ### In Dev:
 
 * Protheus or grafana (Still needs metrics)
 * Good practices airflow (still need polish)
-* Jupyter -> With minio data
 
 ### Next Steps:
 
