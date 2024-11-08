@@ -40,6 +40,10 @@ spec:
                 secretKeyRef:
                   name: minio-secrets
                   key: root-password
+        singleuser:
+          image:
+            name: gabrielphilot/custom_jupyterlab
+            tag: "0.1"
   syncPolicy:
     automated:
       prune: true

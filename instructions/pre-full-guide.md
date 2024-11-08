@@ -238,7 +238,7 @@ DAGS_FOLDER_PATH = path.dirname(__file__) in K8podOperator task.
 ```sh
 # ingestion image
 eval $(minikube docker-env)
-docker build --no-cache -f images/python/dockerfile images/python/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+docker build --no-cache -f images/python_ingestion/dockerfile images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
 
 # here dont forget if change this name, change it into dags yamls
 
@@ -316,6 +316,20 @@ check out the dag in airflow UI + logs, and the files at MiniO.
 
 
 ## Jupyter-notebook [acessing the data]
+```sh
+# first test
+eval $(minikube docker-env)
+docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
+
+eval $(minikube docker-env)
+docker build --no-cache -f images/python_ingestion/dockerfile images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+
+eval $(minikube docker-env)
+docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
+
+
+```
+
 
 ```sh
 # notebook

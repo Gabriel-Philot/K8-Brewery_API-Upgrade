@@ -1,0 +1,24 @@
+FROM quay.io/jupyter/base-notebook:2024-10-07
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt
+
+# Install JupyterLab
+RUN pip install jupyterlab
+
+# Create the 'resources' and 'config' directories and set the user jovyan as the owner
+RUN mkdir -p /home/jovyan/resources /home/jovyan/config && \
+    chown -R jovyan:users /home/jovyan/resources /home/jovyan/config /home/jovyan/
+
+# Copy files directly to the image and set the user
+USER jovyan
+COPY resources /home/jovyan/resources
+COPY config /home/jovyan/config
+COPY brewnotebook.ipynb /home/jovyan/brewnotebook.ipynb
+
+# Configure to start JupyterLab by default
+ENV JUPYTERHUB_SINGLEUSER_APP="jupyter_server.serverapp.ServerApp"
+
+# Define the startup command for JupyterLab
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
+

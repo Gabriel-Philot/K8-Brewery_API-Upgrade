@@ -1,0 +1,8 @@
+pip>=23.3.2
+pandas == 2.1.4
+pytz==2024.1
+requests==2.31.0
+boto3==1.26.158
+pyyaml==6.0.2
+duckdb==1.1.3
+pathlib
