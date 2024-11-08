@@ -328,15 +328,11 @@ docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jup
 kubectl apply -f manifests/notebook/jup-notebook.yaml
 ```
 
-kubectl get svc -n jupyter
-external-id public + 80 da porta
-http://10.104.108.13:80
-
-
+<!--
 #### comandos v atual
 
 ```sh
-
+### versão ruim
 kubectl port-forward svc/custom-jupyter -n jupyter 8888:8888
 
 
@@ -348,4 +344,26 @@ kubectl exec -it $(kubectl get pods -n jupyter -l app=custom-jupyter -o jsonpath
 
 ####
 token -> vai aparecer
+```
+-->
+
+#### Need to nhance the token part but its ok.
+
+```sh
+# versão atual
+
+# external-ip 
+kubectl get svc -n jupyter
+
+# get token
+kubectl exec -it $(kubectl get pods -n jupyter -l app=custom-jupyter -o jsonpath='{.items[0].metadata.name}') -n jupyter -- jupyter server list
+
+```
+
+## Web interface
+```
+link = {external-ip} + 8888
+
+then use token in login page
+
 ```
