@@ -317,25 +317,35 @@ check out the dag in airflow UI + logs, and the files at MiniO.
 
 ## Jupyter-notebook [acessing the data]
 ```sh
-# first test
-eval $(minikube docker-env)
-docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
-
-eval $(minikube docker-env)
-docker build --no-cache -f images/python_ingestion/dockerfile images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+# Building image
 
 eval $(minikube docker-env)
 docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
-
-
 ```
-
 
 ```sh
 # notebook
 kubectl apply -f manifests/notebook/jup-notebook.yaml
 ```
 
+kubectl get svc -n jupyter
 external-id public + 80 da porta
 http://10.104.108.13:80
 
+
+#### comandos v atual
+
+```sh
+
+kubectl port-forward svc/custom-jupyter -n jupyter 8888:8888
+
+
+kubectl get pods -n jupyter
+
+kubectl logs jupyter-admin -n jupyter | grep token
+
+kubectl exec -it $(kubectl get pods -n jupyter -l app=custom-jupyter -o jsonpath='{.items[0].metadata.name}') -n jupyter -- jupyter server list
+
+####
+token -> vai aparecer
+```
