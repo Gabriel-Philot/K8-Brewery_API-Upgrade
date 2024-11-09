@@ -31,3 +31,21 @@ change repo path
 change repo path
 - `minikube/manifests/orchestrator/airflow.yaml`
 ``` -->
+
+
+## EKS [AWS]
+
+A aws tem uma parada chata com o storageclass que aprendi na porrada
+a maneira de armazenar storage da aws é um pouco diferente do minio e google
+caçar por manifests de objetos relacionados a armazenar dados
+creio que aqui seja caçar os arquivos que tenham storage class e colocar pra gp2
+vou listar quais os arquivos para vc conseguir ver a diferença
+
+
+
+
+(misc)
+change repo path
+
+- `minikube/manifests/misc/access-control.yaml`
+- `minikube/manifests/misc/secrets.yaml`

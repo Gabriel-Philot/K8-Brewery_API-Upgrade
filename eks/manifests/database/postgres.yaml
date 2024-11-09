@@ -34,6 +34,7 @@ spec:
             type: LoadBalancer
           persistence:
             size: 10Gi
+            storageClass: gp2
           configuration: |-
             huge_pages = 'off'
             listen_addresses = '*'

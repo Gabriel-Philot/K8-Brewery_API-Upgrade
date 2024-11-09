@@ -4,7 +4,7 @@
 variable "region" {
   description = "AWS region"
   type        = string
-  default     = "us-east-1"
+  default     = "us-east-2"
 }
 
 variable "cluster_name" {
@@ -19,16 +19,22 @@ variable "cidr_block" {
   default = "10.0.0.0/16"
 }
 
+variable "aws_profile" {
+  type        = string
+  description = "AWS profile for credentials"
+  sensitive   = true
+}
+
 variable "var_access_key" {
   type        = string
-  description = "Valor da chave de acesso usada"
-  default = ""
+  description = "Value of the access key used"
+  sensitive = true
 }
 
 variable "var_secret_key" {
   type        = string
-  description = "Valor da secret usada para o acesso"
-  default = ""
+  description = "Value of the secret key used for access"
+  sensitive = true
 }
 
 variable "cluster_version" {
@@ -52,5 +58,5 @@ variable "public_subnets" {
 variable "lista_az" {
   type = list(string)
   description = "Lista de azs a serem usadas"
-  default = ["us-east-1a", "us-east-1b"]
+  default = ["us-east-2a", "us-east-2b"]
 }

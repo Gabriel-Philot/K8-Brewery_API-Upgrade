@@ -1,11 +1,23 @@
-```sh
-minikube start --memory=8000 --cpus=2
-```
+eks
 
-Para acessar alguns serviços via loadbalancer no Minikube, é necessário utilizar o [tunelamento do minikube](https://minikube.sigs.k8s.io/docs/handbook/accessing/#example-of-loadbalancer). Para isso, abra uma nova aba no seu terminal e execute o seguinte comando:
-```sh
-minikube tunnel
-```
+
+cd -> 
+pasta dir intra-terraform
+
+terraform init
+
+terraform plan
+
+terraform apply --auto-approve
+
+# para se conectar ao cluster de K8s da AWS execute o comando abaixo
+# altere o nome do cluster e região caso necessário
+aws eks --profile {profile_config_iam_user_aws} --region us-east-2 update-kubeconfig --name k8s-aws
+
+
+
+
+
 
 ## Instalação das ferramentas
 

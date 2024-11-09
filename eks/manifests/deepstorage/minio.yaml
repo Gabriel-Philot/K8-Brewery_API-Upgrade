@@ -22,6 +22,7 @@ spec:
           type: LoadBalancer
         persistence:
           size: 10Gi
+          storageClass: gp2
         volumePermissions:
           enabled: true
     chart: minio
