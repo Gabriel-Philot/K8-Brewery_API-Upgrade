@@ -87,7 +87,8 @@ argocd repo add git@github.com:Gabriel-Philot/k8-data-plataform-studies.git --ss
 caso queira ver o password do argo para acessar a interface web execute este comando: `kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.password}" | base64 -d`
 
 
-> [!WARNING]Lembrando que para este comando funcionar é necessario que você tenha uma `chave ssh` configurada para se conectar com o github no seu computador.
+> [!WARNING] 
+Lembrando que para este comando funcionar é necessario que você tenha uma `chave ssh` configurada para se conectar com o github no seu computador.
 
 Para acessar o argocd pelo IP gerado no Loadbalancer execute o comando:
 
