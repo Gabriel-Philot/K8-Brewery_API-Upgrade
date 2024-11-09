@@ -12,11 +12,8 @@ terraform apply --auto-approve
 
 # para se conectar ao cluster de K8s da AWS execute o comando abaixo
 # altere o nome do cluster e região caso necessário
+
 aws eks --profile {profile_config_iam_user_aws} --region us-east-2 update-kubeconfig --name k8s-aws
-
-
-
-
 
 
 ## Instalação das ferramentas
@@ -51,6 +48,8 @@ Altere o service do argo para loadbalancer:
 ```sh
 # create a load balancer
 kubectl patch svc argocd-server -n cicd -p '{"spec": {"type": "LoadBalancer"}}'
+
+export ARGOCD_LB=$(kubectl get svc argocd-server -n cicd -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
 ```
 
 Em seguida instale o argo cli para fazer a configuração do repositorio:
@@ -60,7 +59,9 @@ sudo chmod +x /usr/local/bin/argocd
 ```
 Em seguida armazene o ip atribiudo para acessar o argo e faça o login no argo, com os seguintes comandos:
 ```sh
-ARGOCD_LB=$(kubectl get services -n cicd -l app.kubernetes.io/name=argocd-server,app.kubernetes.io/instance=argocd -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
+
+# aqui difere um pouco do minikubbe
+ARGOCD_LB=$(kubectl get services -n cicd -l app.kubernetes.io/name=argocd-server,app.kubernetes.io/instance=argocd -o jsonpath="{.items[0].status.loadBalancer.ingress[0].hostname}")
 
 # get password to log into argocd portal
 # argocd login 192.168.0.200 --username admin --password UbV0FdJ2ZNCD8kxU --insecure
@@ -117,7 +118,7 @@ kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.passw
 ## Aqui o reflector armazena as secrets basicamente e distribui entre diferentes namespaces
 
 ```sh
-kubectl apply -f minikube/manifests/management/reflector.yaml
+kubectl apply -f eks/manifests/management/reflector.yaml
 ```
 
 Antes de executar os comandos, você pode alterar os secrets dos arquivos localizados na pasta `secrets/` se quiser mudar as senhas de acesso aos bancos de dados e ao storage.
@@ -135,7 +136,7 @@ In this setup, we can modify the values in config.json (located at images/airflo
 ### alterar github -> manifests/misc/secrets.yaml
 ```sh
 # secrets
-kubectl apply -f minikube/manifests/misc/secrets.yaml
+kubectl apply -f eks/manifests/misc/secrets.yaml
 ```
 
 >[!NOTE] 
@@ -150,10 +151,10 @@ Uma vez que os secrets estejam configurados, é possível instalar os bancos de 
 
 ```sh
 # databases
-kubectl apply -f minikube/manifests/database/postgres.yaml
+kubectl apply -f eks/manifests/database/postgres.yaml
 
 # deep storage
-kubectl apply -f minikube/manifests/deepstorage/minio.yaml
+kubectl apply -f eks/manifests/deepstorage/minio.yaml
 ```
 
 Por fim, instale o Spark e o Airflow, juntamente com suas permissões para executar os processos do Spark, executando os seguintes comandos:
