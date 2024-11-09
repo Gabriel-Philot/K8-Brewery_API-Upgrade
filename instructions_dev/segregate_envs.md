@@ -41,11 +41,11 @@ caçar por manifests de objetos relacionados a armazenar dados
 creio que aqui seja caçar os arquivos que tenham storage class e colocar pra gp2
 vou listar quais os arquivos para vc conseguir ver a diferença
 
-
-
+- `eks/manifests/deepstorage/minio.yaml`
+- `eks/manifests/database/postgres.yaml`
 
 (misc)
 change repo path
 
-- `minikube/manifests/misc/access-control.yaml`
-- `minikube/manifests/misc/secrets.yaml`
+- `eks/manifests/misc/access-control.yaml`
+- `eks/manifests/misc/secrets.yaml`
