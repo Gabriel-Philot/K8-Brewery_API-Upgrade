@@ -12,19 +12,20 @@ This setup demonstrates Kubernetes’ flexibility, showcasing how it can remain 
 
 In this case, Minikube serves as the default version. Below, I've noted the specific files modified to create this segregated environment.
 
-> **Note**
-> Some repository paths were adjusted to ensure Argo/Airflow could continue locating the necessary files.
+> [!Note]
+Some repository paths were adjusted to ensure Argo/Airflow could continue locating the necessary files.
 
 #### Modified Files for Minikube Environment
 
-(misc)
+> [!Note]
+Change repo url.
 
-change repo path (and repo if change name of repo)
+(misc)
+change repo path
 
 - `minikube/manifests/misc/access-control.yaml`
 - `minikube/manifests/misc/secrets.yaml`
 
 (airflow)
-
 change repo path
-
+- `minikube/manifests/orchestrator/airflow.yaml`

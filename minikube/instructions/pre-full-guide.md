@@ -105,7 +105,7 @@ kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.passw
 ## Aqui o reflector armazena as secrets basicamente e distribui entre diferentes namespaces
 
 ```sh
-kubectl apply -f manifests/management/reflector.yaml
+kubectl apply -f minikube/manifests/management/reflector.yaml
 ```
 
 Antes de executar os comandos, você pode alterar os secrets dos arquivos localizados na pasta `secrets/` se quiser mudar as senhas de acesso aos bancos de dados e ao storage.
@@ -123,11 +123,15 @@ In this setup, we can modify the values in config.json (located at images/airflo
 ### alterar github -> manifests/misc/secrets.yaml
 ```sh
 # secrets
-kubectl apply -f manifests/misc/secrets.yaml
+kubectl apply -f minikube/manifests/misc/secrets.yaml
 ```
 
-> Caso não queira instalar o Reflactor para automatizar o processo de criar o secret em vários namespaces diferentes, você pode replicar manualmente o secret para outro namespace executando este comando:
+>[!NOTE] 
+Caso não queira instalar o Reflactor para automatizar o processo de criar o secret em vários namespaces diferentes, você pode replicar manualmente o secret para outro namespace executando este comando:
+
+```sh
 `kubectl get secret minio-secrets -n deepstorage -o yaml | sed s/"namespace: deepstorage"/"namespace: processing"/| kubectl apply -n processing -f -`
+```
 
 Uma vez que os secrets estejam configurados, é possível instalar os bancos de dados e o storage do pipeline de dados com o seguinte comando:
 
