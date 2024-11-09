@@ -130,17 +130,17 @@ kubectl apply -f minikube/manifests/misc/secrets.yaml
 Caso não queira instalar o Reflactor para automatizar o processo de criar o secret em vários namespaces diferentes, você pode replicar manualmente o secret para outro namespace executando este comando:
 
 ```sh
-`kubectl get secret minio-secrets -n deepstorage -o yaml | sed s/"namespace: deepstorage"/"namespace: processing"/| kubectl apply -n processing -f -`
+kubectl get secret minio-secrets -n deepstorage -o yaml | sed s/"namespace: deepstorage"/"namespace: processing"/| kubectl apply -n processing -f
 ```
 
 Uma vez que os secrets estejam configurados, é possível instalar os bancos de dados e o storage do pipeline de dados com o seguinte comando:
 
 ```sh
 # databases
-kubectl apply -f manifests/database/postgres.yaml
+kubectl apply -f minikube/manifests/database/postgres.yaml
 
 # deep storage
-kubectl apply -f manifests/deepstorage/minio.yaml
+kubectl apply -f minikube/manifests/deepstorage/minio.yaml
 ```
 
 Por fim, instale o Spark e o Airflow, juntamente com suas permissões para executar os processos do Spark, executando os seguintes comandos:
@@ -154,14 +154,14 @@ helm repo update
 
 ```sh
 # processing
-kubectl apply -f manifests/processing/spark.yaml
+kubectl apply -f minikube/manifests/processing/spark.yaml
 ```
 
 
-## Grafana
+## Grafana [Still without metrics]
 ```sh
-kubectl apply -f manifests/monitoring/prometheus.yaml
-kubectl apply -f manifests/monitoring/grafana.yaml
+kubectl apply -f minikube/manifests/monitoring/prometheus.yaml
+kubectl apply -f minikube/manifests/monitoring/grafana.yaml
 #kubectl apply -f manifests/monitoring/pod-monitoring.yaml  deprecated
 
 ```
@@ -173,9 +173,6 @@ kubectl get services --namespace monitoring
 kubectl describe service prometheus-server --namespace=monitoring
 # use the ip plus 80 in grafana's link data source.
 ```
-
-
-
 
 
 <!-- Para criar um imagem do airflow com algumas libs inclusas, para isto execute o seguinte comando:
@@ -204,22 +201,27 @@ kubectl create secret generic airflow-ssh-secret --from-file=gitSshKey=$HOME/.ss
 
 ```sh
 # orchestrator
-kubectl apply -f manifests/orchestrator/airflow.yaml
+kubectl apply -f minikube/manifests/orchestrator/airflow.yaml
 ```
 
 Em seguida, instale as configurações de acesso:
 ### change github -> anifests/misc/access-control.yaml repo
 
 ```sh
-kubectl apply -f manifests/misc/access-control.yaml
+kubectl apply -f minikube/manifests/misc/access-control.yaml
 ```
 
 Para que seja possivel o Ariflow executar de maneira independente os processos spark é preciso que ele tenha uma conexão com o cluster, e para isto é necessario passar essa informação ao Airflow. Para adicionar a conexão com o cluster ao Airflow execute:
 
 
+
 ```sh
-kubectl get pods --no-headers -o custom-columns=":metadata.name" -n orchestrator | grep scheduler | xargs -i sh -c 'kubectl cp images/airflow/connections.json orchestrator/{}:./ -c scheduler | kubectl -n orchestrator exec {} -- airflow connections import connections.json'
+kubectl get pods --no-headers -o custom-columns=":metadata.name" -n orchestrator | grep scheduler | xargs -i sh -c 'kubectl cp minikube/images/airflow/connections.json orchestrator/{}:./ -c scheduler | kubectl -n orchestrator exec {} -- airflow connections import connections.json'
 ```
+> [!WARNING] 
+Sneaky cp path, care with the env->images path that will be used above
+
+
 <!-- export SCHEDULER_POD_NAME="$(kubectl get pods --no-headers -o custom-columns=":metadata.name" -n orchestrator | grep scheduler)"
 kubectl cp images/airflow/connections.json orchestrator/$SCHEDULER_POD_NAME:./ -c scheduler
 kubectl -n orchestrator exec $SCHEDULER_POD_NAME -- airflow connections import connections.json -->
@@ -228,35 +230,32 @@ kubectl -n orchestrator exec $SCHEDULER_POD_NAME -- airflow connections import c
 Ótimo, agora que você configuro u as ferramentas necessárias, temos o ambiente de desenvolvimento e de execução instalado e pronto para uso.
 
 # Executando o projeto
-
-
-Antes de tudo, é necessário possuir uma `imagem do Spark` que contenha todos os JARs necessários para a execução do nosso pipeline. Para criar uma imagem do Spark com essas especificações, execute:
-
-
+<!--
 
 ## Solved but dont know why:
 
 * Reminder: 
 DAGS_FOLDER_PATH = path.dirname(__file__) in K8podOperator task.
-
+-->
 
 ```sh
 # ingestion image
 eval $(minikube docker-env)
-docker build --no-cache -f images/python_ingestion/dockerfile images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+docker build --no-cache -f minikube/images/python_ingestion/dockerfile minikube/images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
 
 # here dont forget if change this name, change it into dags yamls
 
 # for cloud deploy this image should be pushed into a repo.
 ```
+try later to push from docker repo.
+
 <!-- old version
 eval $(minikube docker-env)
 docker build --no-cache -f images/python/dockerfile images/python/ -t python_image:0.2
 -->
 
-> aqui só quando tiver concertado remind to change it in to dags python jobs 
-
-### Commands for debuging if needed
+>[!Note] 
+One way the debug your deploy of a pod.
 
 dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 
@@ -264,20 +263,19 @@ dúvida como fazer isso de uma forma melhor ?? debugar com o K8?
 # ir até o path da do yaml
 kubectl apply -f brewapi_ingestion.yaml -n orchestrator
 
-
 kubectl logs brewapi-ingestion-minio -n orchestrator -c python-container
-
 ```
->[!Note]
-> esse primeiro comando acima está sendo obrigatorio por enquanto (sem ingestão via pipe).
-
 
 
 try later to push from docker repo.
+
+
+é necessário possuir uma `imagem do Spark` que contenha todos os JARs necessários para a execução do nosso pipeline. Para criar uma imagem do Spark com essas especificações, execute:
+
 ```sh
 # first test
 eval $(minikube docker-env)
-docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
+docker build --no-cache -f minikube/images/spark_brewery/dockerfile minikube/images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
 ```
 remind to change it in to dags spark_jobs yamls.
 
@@ -290,7 +288,7 @@ this adress + :8080
 
 login/pass : admin
 
-
+[!!!!! ADPTAR IDEI!!!!!]
 Uma vez na interface do Airflow, ative o pipeline de dados `pipeline-delta-lake-deep-dive-complete` e veja a mágica acontecer. Ou, se preferir, você também pode executar cada etapa separadamente, seguindo a sequência:
   * `ingestion-from-local-data-file-to-bronze-tables`
   * `transformation-and-enrichment-from-bronze-to-silver`
@@ -325,7 +323,7 @@ check out the dag in airflow UI + logs, and the files at MiniO.
 # Building image
 
 eval $(minikube docker-env)
-docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
+docker build --no-cache -f minikube/images/custom_jupyterlab/dockerfile minikube/images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
 ```
 
 ```sh
