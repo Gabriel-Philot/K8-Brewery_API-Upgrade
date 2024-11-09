@@ -329,7 +329,7 @@ docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jup
 
 ```sh
 # notebook
-kubectl apply -f manifests/notebook/jup-notebook.yaml
+kubectl apply -f minikube/manifests/notebook/jup-notebook.yaml
 ```
 
 <!--
