@@ -34,12 +34,12 @@ spec:
         dags:
           gitSync:
             enabled: true
-            repo: "git@github.com:Gabriel-Philot/K8-Brewery_API-Upgrade.git"
+            repo: "git@github.com:Gabriel-Philot/k8-data-plataform-studies.git"
             branch: main
             rev: HEAD
             depth: 1
             maxFailures: 1
-            subPath: "dags"
+            subPath: "minikube/dags"
             sshKeySecret: airflow-ssh-secret
             knownHosts: |-
               |1|yutcXh9HhbK6KCouq3xMQ38B9ns=|V9zQ39gzVxSZ75WU78CGJiVKCOk= ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=

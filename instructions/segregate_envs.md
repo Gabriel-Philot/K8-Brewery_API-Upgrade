@@ -18,7 +18,13 @@ In this case, Minikube serves as the default version. Below, I've noted the spec
 #### Modified Files for Minikube Environment
 
 (misc)
+
+change repo path (and repo if change name of repo)
+
 - `minikube/manifests/misc/access-control.yaml`
 - `minikube/manifests/misc/secrets.yaml`
 
+(airflow)
+
+change repo path
 
