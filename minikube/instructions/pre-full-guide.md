@@ -81,7 +81,9 @@ argocd repo add git@github.com:Gabriel-Philot/{repo-path}.git --ssh-private-key-
 #example
 argocd repo add git@github.com:Gabriel-Philot/K8-Brewery_API-Upgrade.git --ssh-private-key-path ~/.ssh/id_ed25519 --insecure-skip-server-verification
 
+#new repo name
 
+argocd repo add git@github.com:Gabriel-Philot/K8-DataPlataform-Studies.git --ssh-private-key-path ~/.ssh/id_ed25519 --insecure-skip-server-verification
 ```
 
 > caso queira ver o password do argo para acessar a interface web execute este comando: `kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.password}" | base64 -d`
