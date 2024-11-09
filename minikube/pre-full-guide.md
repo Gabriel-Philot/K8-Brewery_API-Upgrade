@@ -129,9 +129,10 @@ kubectl apply -f minikube/manifests/misc/secrets.yaml
 >[!NOTE] 
 Caso não queira instalar o Reflactor para automatizar o processo de criar o secret em vários namespaces diferentes, você pode replicar manualmente o secret para outro namespace executando este comando:
 
-```sh
-kubectl get secret minio-secrets -n deepstorage -o yaml | sed s/"namespace: deepstorage"/"namespace: processing"/| kubectl apply -n processing -f
-```
+
+[CASO NAO TENHA USADO O REFLECTOR]
+- kubectl get secret minio-secrets -n deepstorage -o yaml | sed s/"namespace: deepstorage"/"namespace: processing"/| kubectl apply -n processing -f
+
 
 Uma vez que os secrets estejam configurados, é possível instalar os bancos de dados e o storage do pipeline de dados com o seguinte comando:
 
@@ -216,7 +217,7 @@ Para que seja possivel o Ariflow executar de maneira independente os processos s
 
 
 ```sh
-kubectl get pods --no-headers -o custom-columns=":metadata.name" -n orchestrator | grep scheduler | xargs -i sh -c 'kubectl cp minikube/images/airflow/connections.json orchestrator/{}:./ -c scheduler | kubectl -n orchestrator exec {} -- airflow connections import connections.json'
+kubectl get pods --no-headers -o custom-columns=":metadata.name" -n orchestrator | grep scheduler | xargs -i sh -c 'kubectl cp images/airflow/connections.json orchestrator/{}:./ -c scheduler | kubectl -n orchestrator exec {} -- airflow connections import connections.json'
 ```
 > [!WARNING] 
 Sneaky cp path, care with the env->images path that will be used above
@@ -241,7 +242,7 @@ DAGS_FOLDER_PATH = path.dirname(__file__) in K8podOperator task.
 ```sh
 # ingestion image
 eval $(minikube docker-env)
-docker build --no-cache -f minikube/images/python_ingestion/dockerfile minikube/images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
+docker build --no-cache -f images/python_ingestion/dockerfile images/python_ingestion/ -t gabrielphilot/brewapi-ingestion-minio:0.1
 
 # here dont forget if change this name, change it into dags yamls
 
@@ -275,7 +276,7 @@ try later to push from docker repo.
 ```sh
 # first test
 eval $(minikube docker-env)
-docker build --no-cache -f minikube/images/spark_brewery/dockerfile minikube/images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
+docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
 ```
 remind to change it in to dags spark_jobs yamls.
 
@@ -323,7 +324,7 @@ check out the dag in airflow UI + logs, and the files at MiniO.
 # Building image
 
 eval $(minikube docker-env)
-docker build --no-cache -f minikube/images/custom_jupyterlab/dockerfile minikube/images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
+docker build --no-cache -f images/custom_jupyterlab/dockerfile images/custom_jupyterlab/ -t gabrielphilot/custom_jupyterlab:0.1
 ```
 
 ```sh

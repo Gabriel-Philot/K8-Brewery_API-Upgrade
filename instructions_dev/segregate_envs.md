@@ -26,6 +26,8 @@ change repo path
 - `minikube/manifests/misc/access-control.yaml`
 - `minikube/manifests/misc/secrets.yaml`
 
-(airflow)
+<!-- 
+(airflow if)
 change repo path
 - `minikube/manifests/orchestrator/airflow.yaml`
+``` -->
