@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: custom-jupyter
+  namespace: cicd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: jupyter
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps
+    targetRevision: HEAD
+    path: .
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: custom-jupyter
+  namespace: jupyter
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8888
+    targetPort: 8888
+    protocol: TCP
+  selector:
+    app: custom-jupyter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custom-jupyter
+  namespace: jupyter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custom-jupyter
+  template:
+    metadata:
+      labels:
+        app: custom-jupyter
+    spec:
+      containers:
+      - name: jupyter
+        image: gabrielphilot/custom_jupyterlab:0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8888
+        env:
+        - name: MINIO_ENDPOINT
+          value: "http://minio-service.deepstorage.svc.cluster.local:9000"
+        - name: MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secrets
+              key: root-user
+        - name: MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: minio-secrets
+              key: root-password
+        resources:
+          limits:
+            memory: "2Gi"
+            cpu: "1"
+          requests:
+            memory: "1Gi"
+            cpu: "500m"

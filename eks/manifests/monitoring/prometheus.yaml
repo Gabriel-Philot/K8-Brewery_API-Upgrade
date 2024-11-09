@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prometheus
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  namespace: cicd
+spec:
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring
+  project: default
+  source:
+    repoURL: "https://prometheus-community.github.io/helm-charts"
+    targetRevision: "15.0.0"
+    chart: "prometheus"
+    helm:
+      values: |-
+        alertmanager:
+          enabled: true
+        server:
+          service:
+            type: LoadBalancer
+            port: 9090
+        nodeExporter:
+          enabled: true
+        podMonitors:
+          - name: airflow-pod-monitor
+            namespace: orchestrator
+            selector:
+              matchLabels:
+                release: airflow
+            podMetricsEndpoints:
+              - port: 9091
+                interval: 30s
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
