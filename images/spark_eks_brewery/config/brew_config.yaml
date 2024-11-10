@@ -1,0 +1,24 @@
+development:
+  apis:
+    brew_api:
+      url: "https://api.openbrewerydb.org/v1/breweries"
+  storages:
+    brew_bucket:
+      name: "lakehouse"
+    brew_paths:
+      bronze: "s3a://lakehouse/bronze/"
+      silver: "s3a://lakehouse/silver/"
+      gold:   "s3a://lakehouse/gold/"
+    brew_landing_key:
+      lading: "bronze"
+  minio_dev:
+    endpoint_url: "http://minio.deepstorage.svc.cluster.local:9000"
+    access_key: "miniouser"
+    secret_key: "miniosecret"
+
+      
+
+
+production:
+  ### Only when had different environments.
+    

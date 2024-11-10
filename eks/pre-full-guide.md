@@ -49,6 +49,7 @@ Altere o service do argo para loadbalancer:
 # create a load balancer
 kubectl patch svc argocd-server -n cicd -p '{"spec": {"type": "LoadBalancer"}}'
 
+
 export ARGOCD_LB=$(kubectl get svc argocd-server -n cicd -o jsonpath="{.status.loadBalancer.ingress[0].hostname}")
 ```
 
@@ -61,8 +62,11 @@ Em seguida armazene o ip atribiudo para acessar o argo e faça o login no argo, 
 ```sh
 
 # aqui difere um pouco do minikubbe
+ARGOCD_LB=$(kubectl get services -n cicd -l app.kubernetes.io/name=argocd-server,app.kubernetes.io/instance=argocd -o jsonpath="{.items[0].status.loadBalancer.ingress[0].ip}")
+
 ARGOCD_LB=$(kubectl get services -n cicd -l app.kubernetes.io/name=argocd-server,app.kubernetes.io/instance=argocd -o jsonpath="{.items[0].status.loadBalancer.ingress[0].hostname}")
 
+## exemple of output
 # get password to log into argocd portal
 # argocd login 192.168.0.200 --username admin --password UbV0FdJ2ZNCD8kxU --insecure
 kubectl get secret argocd-initial-admin-secret -n cicd -o jsonpath="{.data.password}" | base64 -d | xargs -t -I {} argocd login $ARGOCD_LB --username admin --password {} --insecure
@@ -290,10 +294,14 @@ try later to push from docker repo.
 
 ```sh
 # remind to change it in to dags spark_jobs yamls.
-docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
+
+# dont now why minikube spark image are screwing this up
+#docker build --no-cache -f images/spark_brewery/dockerfile images/spark_brewery/ -t gabrielphilot/brew-process-spark-delta:0.2
+
+docker build --no-cache -f images/spark_eks_brewery/dockerfile images/spark_eks_brewery/ -t gabrielphilot/brew-process-spark-delta-eks:0.2
 
 # push image to dockerhub
-docker push gabrielphilot/brew-process-spark-delta:0.2
+docker push gabrielphilot/brew-process-spark-delta-eks:0.2
 ```
 
 
