@@ -21,7 +21,10 @@ First of all, I want to thanks [GersonRS](https://github.com/GersonRS) for the a
 
 * Protheus or grafana (Still needs metrics)
 * Good practices airflow (still need polish)
+* Deploy it on AWS.
 
 ### Next Steps:
 
-* Deploy it on a cloud.
+* Deploy it in GCP
+* CI/CD
+* Data Catalog
