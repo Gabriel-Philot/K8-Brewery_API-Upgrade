@@ -15,7 +15,6 @@ terraform apply --auto-approve
 
 aws eks --profile {profile_config_iam_user_aws} --region us-east-2 update-kubeconfig --name k8s-aws
 
-
 ## Instalação das ferramentas
 
 Depois do ambiente inicializado será necessario instalar algumas aplicações que serão responsaveis por manter e gerenciar nosso pipeline de dados.
