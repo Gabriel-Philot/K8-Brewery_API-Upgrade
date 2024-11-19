@@ -6,31 +6,16 @@ metadata:
 spec:
   type: Scala
   mode: cluster
-  image: apache/spark:3.5.3
-  imagePullPolicy: IfNotPresent
+  image: gcr.io/spark-operator/spark:v3.1.1
+  imagePullPolicy: Always
   mainClass: org.apache.spark.examples.SparkPi
-  mainApplicationFile: "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.3.jar"
-  arguments:
-    - "5000"
-  sparkVersion: 3.5.3
+  mainApplicationFile: local:///opt/spark/examples/jars/spark-examples_2.12-3.1.1.jar
+  sparkVersion: "3.1.1"
   driver:
-    labels:
-      version: 3.5.3
     cores: 1
     memory: 512m
     serviceAccount: meuspark-spark-operator-controller
-    # Adicione estas configurações para debug
-    env:
-    - name: SPARK_EXTRA_CLASSPATH
-      value: "/opt/spark/examples/jars/*"
   executor:
-    labels:
-      version: 3.5.3
-    instances: 1
     cores: 1
+    instances: 2
     memory: 512m
-  sparkConf:
-    "spark.kubernetes.driver.podTemplateFile": ""
-    "spark.kubernetes.executor.podTemplateFile": ""
-    "spark.driver.extraJavaOptions": "-Dlog4j.configuration=file:///opt/spark/conf/log4j.properties"
-    "spark.executor.extraJavaOptions": "-Dlog4j.configuration=file:///opt/spark/conf/log4j.properties"
