@@ -12,11 +12,11 @@ spec:
   project: default
   source:
     repoURL: "https://kubeflow.github.io/spark-operator"
-    targetRevision: 2.0.2
+    targetRevision: 1.4.2
     helm:
       values: |-
         webhook:
-          enable: true
+          enable: false
     chart: spark-operator
   syncPolicy:
     automated:
