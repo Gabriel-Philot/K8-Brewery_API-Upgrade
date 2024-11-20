@@ -21,7 +21,7 @@ First of all, I want to thanks [GersonRS](https://github.com/GersonRS) for the a
 
 * Protheus or grafana (Still needs metrics)
 * Good practices airflow (still need polish)
-* Deploy it on AWS (EKS).
+* Deploy it on AWS (EKS). | Still need to see how to enable weebhoook.
 
 ### Next Steps:
 
