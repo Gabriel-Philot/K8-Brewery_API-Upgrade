@@ -16,15 +16,14 @@ First of all, I want to thanks [GersonRS](https://github.com/GersonRS) for the a
 * Fix ingestion (look in instructions - pre-total-guide.md)
 * Configured jupyter lab with DuckDb configs to acess Minio-Lakehouse data.
 * Minikube v0 done
+* Deploy it on AWS (EKS). | Maybe adjust metrics of spark.values to Prometheus as well
 
 ### In Dev:
 
-* Protheus or grafana (Still needs metrics)
+* Prometheus or grafana (Still needs metrics)
 * Good practices airflow (still need polish)
-* Deploy it on AWS (EKS). | Still need to see how to enable weebhoook.
 
 ### Next Steps:
-
 * Deploy it in GCP
 * CI/CD
 * Data Catalog
